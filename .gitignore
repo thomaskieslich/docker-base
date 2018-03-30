@@ -1,5 +1,10 @@
 /app/*
-/app_db/*
 !/app/public/index.php
 
 /backup/*
+
+/data/elasticsearch/*
+/data/mysql/*
+/data/postgres/*
+/data/redis/*
+/data/solr/*
