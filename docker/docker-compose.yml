@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+    app:
+      build:
+          context: app/${PROVISION_CONTEXT}
+          dockerfile: Dockerfile
+          args:
+              SERVER_VERSION: ${SERVER_VERSION}
+              PHP_VERSION: ${PHP_VERSION}
+      ports:
+          - ${EXTERNAL_HTTP_PORT}:80
+          - ${EXTERNAL_HTTPS_PORT}:443
+          - ${EXTERNAL_SSH_PORT}:22
+      volumes:
+          - ./../app:/app:cached
+      links:
+          - mysql
+          - mail
+      container_name: ${COMPOSE_PROJECT_NAME}_app
+      environment:
+          WEB_DOCUMENT_ROOT: ${WEB_DOCUMENT_ROOT}
+          WEB_DOCUMENT_INDEX: ${WEB_DOCUMENT_INDEX}
+
+    mysql:
+      build:
+          context: mysql
+          dockerfile: Dockerfile
+          args:
+            MYSQL_VERSION: ${MYSQL_VERSION}
+      container_name: ${COMPOSE_PROJECT_NAME}_mysql
+      environment:
+          MYSQL_DATABASE: app_db
+          MYSQL_USER: dev
+          MYSQL_PASSWORD: dev
+          MYSQL_ROOT_PASSWORD: dev
+      ports:
+        - ${EXTERNAL_DB_PORT}:3306
+      volumes:
+        - ./../app_db/:/var/lib/mysql:delegated
+
+    mail:
+       image: mailhog/mailhog
+       ports:
+         - ${EXTERNAL_MAIL_PORT}:8025
+       container_name: ${COMPOSE_PROJECT_NAME}_mail
+
