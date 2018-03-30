@@ -1,4 +1,5 @@
-/backup/*
 /app/*
 /app_db/*
 !/app/public/index.php
+
+/backup/*
