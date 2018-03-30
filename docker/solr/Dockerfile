@@ -1,0 +1,1 @@
+FROM solr:6.2
