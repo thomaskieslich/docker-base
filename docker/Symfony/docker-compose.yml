@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+    app:
+      links:
+        - mail
+      environment:
+        SYMFONY_ENV: dev
+        SYMFONY_DEBUG: 1
+
+    mail:
+       image: mailhog/mailhog
+       ports:
+         - ${EXTERNAL_MAIL_PORT}:8025
+       container_name: ${COMPOSE_PROJECT_NAME}_mail
