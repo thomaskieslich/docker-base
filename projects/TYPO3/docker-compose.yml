@@ -12,6 +12,7 @@ services:
       environment:
         TYPO3_CONTEXT: ${PROVISION_CONTEXT}/Docker
 
+
   #######################################
   # MYSQL server
   #######################################
@@ -32,6 +33,7 @@ services:
       volumes:
         - ./../data/mysql/:/var/lib/mysql:delegated
 
+
   #######################################
   # PostgreSQL server
   #######################################
@@ -49,6 +51,7 @@ services:
 #      volumes:
 #        - ./../data/postgres/_db:/var/lib/postgresql/data/:delegated
 
+
   #######################################
   # mailhog
   #######################################
@@ -57,6 +60,7 @@ services:
 #       ports:
 #         - ${EXTERNAL_MAIL_PORT}:8025
 #       container_name: ${COMPOSE_PROJECT_NAME}_mail
+
 
   #######################################
   # Elasticsearch
@@ -83,6 +87,7 @@ services:
 #      volumes:
 #        - ./../data/solr:/opt/solr/server/solr/data/:delegated
 
+
   #######################################
   # Tika server
   #######################################
@@ -92,6 +97,7 @@ services:
 #      container_name: ${COMPOSE_PROJECT_NAME}_tika
 #      ports:
 #        - 9998:9998
+
 
   #######################################
   # Redis
