@@ -4,6 +4,7 @@ services:
     app:
       links:
         - mail
+        - mysql
       environment:
         SYMFONY_ENV: dev
         SYMFONY_DEBUG: 1

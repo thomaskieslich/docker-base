@@ -3,8 +3,8 @@ version: '3'
 services:
     app:
       links:
-        - mysql
         - mail
+        - mysql
 #        - redis
 #        - postgres
 #        - elasticsearch
