@@ -4,7 +4,7 @@ services:
     app:
       links:
         - mysql
-#        - mail
+        - mail
 #        - redis
 #        - postgres
 #        - elasticsearch
