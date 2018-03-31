@@ -14,9 +14,6 @@ services:
           - ${EXTERNAL_SSH_PORT}:22
       volumes:
           - ./../app:/app:cached
-      links:
-          - mysql
-          - mail
       container_name: ${COMPOSE_PROJECT_NAME}_app
       environment:
           WEB_DOCUMENT_ROOT: ${WEB_DOCUMENT_ROOT}
