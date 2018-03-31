@@ -22,26 +22,3 @@ services:
           WEB_DOCUMENT_ROOT: ${WEB_DOCUMENT_ROOT}
           WEB_DOCUMENT_INDEX: ${WEB_DOCUMENT_INDEX}
 
-    mysql:
-      build:
-          context: mysql
-          dockerfile: Dockerfile
-          args:
-            MYSQL_VERSION: ${MYSQL_VERSION}
-      container_name: ${COMPOSE_PROJECT_NAME}_mysql
-      environment:
-          MYSQL_DATABASE: app_db
-          MYSQL_USER: dev
-          MYSQL_PASSWORD: dev
-          MYSQL_ROOT_PASSWORD: dev
-      ports:
-        - ${EXTERNAL_DB_PORT}:3306
-      volumes:
-        - ./../app_db/:/var/lib/mysql:delegated
-
-    mail:
-       image: mailhog/mailhog
-       ports:
-         - ${EXTERNAL_MAIL_PORT}:8025
-       container_name: ${COMPOSE_PROJECT_NAME}_mail
-
