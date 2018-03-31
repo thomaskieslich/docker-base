@@ -4,8 +4,6 @@ ARG PHP_VERSION
 
 FROM webdevops/php-$SERVER_VERSION:$PHP_VERSION
 
-#ENV PROVISION_CONTEXT "production"
-
 # Deploy scripts/configurations
 COPY conf/ /opt/docker/etc/
 
