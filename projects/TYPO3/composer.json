@@ -52,7 +52,6 @@
     "typo3/cms-wizard-crpages": "8.7.*",
     "typo3/cms-wizard-sortpages": "8.7.*",
     "typo3/cms-introduction": "^3.0.0",
-    "apache-solr-for-typo3/solr": "^8.0.0",
     "helhum/typo3-console": "5.2.*",
     "georgringer/news": "6.1.*",
     "instituteweb/unroll": "2.0.*",
