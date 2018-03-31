@@ -1,0 +1,100 @@
+{
+  "name": "thomask/t38xdev",
+  "description": "typo3 dev setup",
+  "license": "GPL-2.0-or-later",
+  "config": {
+    "optimize-autoloader": false
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://composer.typo3.org/"
+    }
+  ],
+  "require": {
+    "typo3/cms-about": "8.7.*",
+    "typo3/cms-backend": "8.7.*",
+    "typo3/cms-belog": "8.7.*",
+    "typo3/cms-beuser": "8.7.*",
+    "typo3/cms-context-help": "8.7.*",
+    "typo3/cms-core": "8.7.*",
+    "typo3/cms-documentation": "8.7.*",
+    "typo3/cms-extbase": "8.7.*",
+    "typo3/cms-extensionmanager": "8.7.*",
+    "typo3/cms-felogin": "8.7.*",
+    "typo3/cms-filelist": "8.7.*",
+    "typo3/cms-filemetadata": "8.7.*",
+    "typo3/cms-fluid": "8.7.*",
+    "typo3/cms-fluid-styled-content": "8.7.*",
+    "typo3/cms-form": "8.7.*",
+    "typo3/cms-frontend": "8.7.*",
+    "typo3/cms-func": "8.7.*",
+    "typo3/cms-info": "8.7.*",
+    "typo3/cms-info-pagetsconfig": "8.7.*",
+    "typo3/cms-impexp": "8.7.*",
+    "typo3/cms-install": "8.7.*",
+    "typo3/cms-lang": "8.7.*",
+    "typo3/cms-linkvalidator": "8.7.*",
+    "typo3/cms-lowlevel": "8.7.*",
+    "typo3/cms-opendocs": "8.7.*",
+    "typo3/cms-recordlist": "8.7.*",
+    "typo3/cms-recycler": "8.7.*",
+    "typo3/cms-reports": "8.7.*",
+    "typo3/cms-rsaauth": "8.7.*",
+    "typo3/cms-rte-ckeditor": "8.7.*",
+    "typo3/cms-saltedpasswords": "8.7.*",
+    "typo3/cms-sys-action": "8.7.*",
+    "typo3/cms-sys-note": "8.7.*",
+    "typo3/cms-t3editor": "8.7.*",
+    "typo3/cms-taskcenter": "8.7.*",
+    "typo3/cms-tstemplate": "8.7.*",
+    "typo3/cms-viewpage": "8.7.*",
+    "typo3/cms-wizard-crpages": "8.7.*",
+    "typo3/cms-wizard-sortpages": "8.7.*",
+    "typo3/cms-introduction": "^3.0.0",
+    "helhum/typo3-console": "5.2.*",
+    "georgringer/news": "6.1.*",
+    "instituteweb/unroll": "2.0.*",
+    "dmitryd/typo3-realurl": "2.3.*"
+  },
+  "require-dev": {
+    "typo3/testing-framework": "~1.2.2",
+    "codeception/codeception": "^2.4",
+    "enm1989/chromedriver": "~2.30",
+    "typo3/cms-styleguide": "~8.0.14",
+    "friendsofphp/php-cs-fixer": "^2.0",
+    "fiunchinho/phpunit-randomizer": "~3.0.0",
+    "georgringer/backend-debug": "~1.0.0",
+    "namelesscoder/typo3-cms-fluid-debug": "~1.0.0"
+  },
+  "scripts": {
+    "package-states": [
+      "./vendor/bin/typo3cms install:generatepackagestates"
+    ],
+    "folder-structure": [
+      "./vendor/bin/typo3cms install:fixfolderstructure"
+    ],
+    "database-updateschema": [
+      "./vendor/bin/typo3cms database:updateschema"
+    ],
+    "post-autoload-dump": [
+      "@folder-structure"
+    ]
+  },
+  "extra": {
+    "typo3/cms": {
+      "cms-package-dir": "{$vendor-dir}/typo3/cms",
+      "web-dir": "public"
+    }
+  },
+  "autoload": {
+    "psr-4": {
+    },
+    "classmap": [
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+    }
+  }
+}

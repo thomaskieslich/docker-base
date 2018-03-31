@@ -4,10 +4,8 @@ ARG PHP_VERSION
 
 FROM webdevops/php-$SERVER_VERSION:$PHP_VERSION
 
-#ENV PROVISION_CONTEXT "production"
-
 # Deploy scripts/configurations
-COPY docker/conf/ /opt/docker/etc/
+COPY conf/ /opt/docker/etc/
 
 RUN ln -sf /opt/docker/etc/cron/crontab /etc/cron.d/docker-boilerplate \
     && chmod 0644 /opt/docker/etc/cron/crontab \

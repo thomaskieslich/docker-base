@@ -24,6 +24,8 @@ start:
 stop:
 	docker-compose stop
 
+restart: stop start
+
 kill:
 	docker-compose stop
 	docker-compose rm --force
@@ -40,6 +42,17 @@ bash:
 
 root:
 	docker-compose exec --user root app /bin/bash
+
+#############################
+# backup
+#############################
+
+backup-mysql:
+	docker-compose exec mysql /usr/bin/mysqldump -uroot -pdev app_db | gzip > backup/app_db.sql.gz
+
+restore-mysql:
+	gunzip backup/app_db.sql.gz
+	docker-compose exec -it mysql /usr/bin/mysql -uroot -pdev app_db < backup/app_db.sql
 
 
 #############################

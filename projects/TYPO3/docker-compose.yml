@@ -1,0 +1,110 @@
+version: '3'
+
+services:
+    app:
+      links:
+        - mail
+        - mysql
+#        - redis
+#        - postgres
+#        - elasticsearch
+#        - solr
+      environment:
+        TYPO3_CONTEXT: ${PROVISION_CONTEXT}/Docker
+
+
+  #######################################
+  # MYSQL server
+  #######################################
+    mysql:
+      build:
+          context: mysql
+          dockerfile: Dockerfile
+          args:
+            MYSQL_VERSION: ${MYSQL_VERSION}
+      container_name: ${COMPOSE_PROJECT_NAME}_mysql
+      environment:
+          MYSQL_DATABASE: app_db
+          MYSQL_USER: dev
+          MYSQL_PASSWORD: dev
+          MYSQL_ROOT_PASSWORD: dev
+      ports:
+        - ${EXTERNAL_DB_PORT}:3306
+      volumes:
+        - ./../data/mysql/:/var/lib/mysql:delegated
+
+
+  #######################################
+  # PostgreSQL server
+  #######################################
+#    postgres:
+#      build:
+#        context: postgres
+#        dockerfile: Dockerfile
+#      container_name: ${COMPOSE_PROJECT_NAME}_postgres
+#      ports:
+#        - 15432:5432
+#      environment:
+#        POSTGRES_DATABASE: app_db
+#        POSTGRES_USER: dev
+#        POSTGRES_PASSWORD: dev
+#      volumes:
+#        - ./../data/postgres/_db:/var/lib/postgresql/data/:delegated
+
+
+  #######################################
+  # mailhog
+  #######################################
+    mail:
+       image: mailhog/mailhog
+       ports:
+         - ${EXTERNAL_MAIL_PORT}:8025
+       container_name: ${COMPOSE_PROJECT_NAME}_mail
+
+
+  #######################################
+  # Elasticsearch
+  #######################################
+#    elasticsearch:
+#      build:
+#        context: elasticsearch
+#      ports:
+#        - 19200:9200
+#        - 19300:9300
+#      volumes:
+#        - ./../data/elasticsearch/:/usr/share/elasticsearch/data/:delegated
+
+
+  #######################################
+  # Solr server
+  #######################################
+#    solr:
+#      build:
+#        context: solr
+#      container_name: ${COMPOSE_PROJECT_NAME}_solr
+#      ports:
+#        - 8983:8983
+#      volumes:
+#        - ./../data/solr:/opt/solr/server/solr/data/:delegated
+
+
+  #######################################
+  # Tika server
+  #######################################
+#    tika:
+#      build:
+#        context: tika
+#      container_name: ${COMPOSE_PROJECT_NAME}_tika
+#      ports:
+#        - 9998:9998
+
+
+  #######################################
+  # Redis
+  #######################################
+#    redis:
+#      build:
+#        context: redis
+#      container_name: ${COMPOSE_PROJECT_NAME}_redis
+#      volumes:
+#        - ./../data/redis:/data/:delegated
