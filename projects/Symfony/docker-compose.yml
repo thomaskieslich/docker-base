@@ -20,14 +20,33 @@ services:
             MYSQL_VERSION: ${MYSQL_VERSION}
       container_name: ${COMPOSE_PROJECT_NAME}_mysql
       environment:
-          MYSQL_DATABASE: app_db
-          MYSQL_USER: dev
-          MYSQL_PASSWORD: dev
-          MYSQL_ROOT_PASSWORD: dev
+          MYSQL_DATABASE: ${MYSQL_DATABASE}
+          MYSQL_USER: ${MYSQL_USER}
+          MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+          MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       ports:
         - ${EXTERNAL_DB_PORT}:3306
       volumes:
         - ./../data/mysql/:/var/lib/mysql:delegated
+
+  #######################################
+  # PostgreSQL server
+  #######################################
+    # postgres:
+    #     build:
+    #       context: postgres
+    #       dockerfile: Dockerfile
+    #       args:
+    #         POSTGRES_VERSION: ${POSTGRES_VERSION}
+    #     container_name: ${COMPOSE_PROJECT_NAME}_postgres
+    #     ports:
+    #       - 15432:5432
+    #     environment:
+    #       POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+    #       POSTGRES_USER: ${POSTGRES_USER}
+    #       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    #     volumes:
+    #       - ./../data/postgres/_db:/var/lib/postgresql/data/:delegated
 
   #######################################
   # mailhog
