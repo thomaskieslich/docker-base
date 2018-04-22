@@ -1,1 +1,3 @@
-FROM elasticsearch:latest
+ARG ELASTICSEARCH_VERSION
+
+FROM elasticsearch:$ELASTICSEARCH_VERSION

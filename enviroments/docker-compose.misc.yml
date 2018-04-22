@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+
+  #######################################
+  # mailhog
+  #######################################
+  mailhog:
+      image: mailhog/mailhog
+      ports:
+        - ${EXTERNAL_MAIL_PORT}:8025
+      container_name: ${COMPOSE_PROJECT_NAME}_mail
+
+

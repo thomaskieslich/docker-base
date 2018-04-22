@@ -1,0 +1,3 @@
+ARG PHPMYADMIN_VERSION
+
+FROM phpmyadmin/phpmyadmin:$PHPMYADMIN_VERSION
