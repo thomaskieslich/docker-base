@@ -8,5 +8,3 @@
 /data/postgres/*
 /data/redis/*
 /data/solr/*
-
-/.env.*
