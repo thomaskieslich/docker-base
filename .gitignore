@@ -1,7 +1,4 @@
 /app/*
-!/app/public/index.php
-
-
 /backup/*
 
 /data/elasticsearch/*
@@ -11,3 +8,4 @@
 /data/solr/*
 
 !.gitkeep
+!/app/public/index.php
