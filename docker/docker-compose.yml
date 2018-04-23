@@ -12,9 +12,9 @@ services:
 #            - postgres
 #            - mongo
             - redis
-            - memcached
+#            - memcached
             # - elasticsearch
-            # - solr
+            - solr
             - mailhog
         environment:
             TYPO3_CONTEXT: ${PROVISION_CONTEXT}/Docker
@@ -87,14 +87,14 @@ services:
         volumes:
           - ./../data/redis:/data/:delegated
 
-    memcached:
-        build:
-          context: memcached
-          args:
-            MEMCACHED_VERSION: ${MEMCACHED_VERSION}
-        container_name: ${COMPOSE_PROJECT_NAME}_memcached
-        ports:
-          - ${EXTERNAL_MEMCACHED_PORT}:11211
+#    memcached:
+#        build:
+#          context: memcached
+#          args:
+#            MEMCACHED_VERSION: ${MEMCACHED_VERSION}
+#        container_name: ${COMPOSE_PROJECT_NAME}_memcached
+#        ports:
+#          - ${EXTERNAL_MEMCACHED_PORT}:11211
 
 
     #######################################
@@ -113,16 +113,16 @@ services:
 #        - ./../data/elasticsearch/:/usr/share/elasticsearch/data/:delegated
 
 
-#    solr:
-#      build:
-#        context: solr
-#        args:
-#           SOLR_VERSION: ${SOLR_VERSION}
-#      container_name: ${COMPOSE_PROJECT_NAME}_solr
-#      ports:
-#        - ${EXTERNAL_SOLR_PORT}:8983
-#      volumes:
-#        - ./../data/solr:/opt/solr/server/solr/data/:delegated
+    solr:
+      build:
+        context: solr
+        args:
+           SOLR_VERSION: ${SOLR_VERSION}
+      container_name: ${COMPOSE_PROJECT_NAME}_solr
+      ports:
+        - ${EXTERNAL_SOLR_PORT}:8983
+      volumes:
+        - ./../data/solr:/opt/solr/server/solr/data/:delegated
 
 
 #    tika:
