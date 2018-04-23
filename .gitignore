@@ -1,5 +1,3 @@
-
-
 /app/*
 !/app/public/index.php
 
