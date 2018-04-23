@@ -1,5 +1,8 @@
+
+
 /app/*
 !/app/public/index.php
+
 
 /backup/*
 
@@ -8,3 +11,5 @@
 /data/postgres/*
 /data/redis/*
 /data/solr/*
+
+!.gitkeep
