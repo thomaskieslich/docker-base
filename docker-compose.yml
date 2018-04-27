@@ -1,0 +1,161 @@
+version: '3'
+
+services:
+    app:
+        build:
+            context: docker/app/${PROVISION_CONTEXT}
+            args:
+                SERVER_VERSION: ${SERVER_VERSION}
+                PHP_VERSION: ${PHP_VERSION}
+        links:
+            - mysql
+#            - postgres
+#            - mongo
+#            - redis
+#            - memcached
+#            - elasticsearch
+#            - solr
+#            - mailhog
+        environment:
+            TYPO3_CONTEXT: ${PROVISION_CONTEXT}/Docker
+        ports:
+            - ${EXTERNAL_HTTP_PORT}:80
+            - ${EXTERNAL_HTTPS_PORT}:443
+            - ${EXTERNAL_SSH_PORT}:22
+        volumes:
+            - ./app:/app:cached
+        container_name: ${COMPOSE_PROJECT_NAME}_app
+        environment:
+            WEB_DOCUMENT_ROOT: ${WEB_DOCUMENT_ROOT}
+            WEB_DOCUMENT_INDEX: ${WEB_DOCUMENT_INDEX}
+
+    #######################################
+    # DB
+    #######################################
+    mysql:
+        build:
+            context: docker/mysql
+            args:
+                MYSQL_VERSION: ${MYSQL_VERSION}
+        container_name: ${COMPOSE_PROJECT_NAME}_mysql
+        environment:
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        ports:
+            - ${EXTERNAL_MYSQL_PORT}:3306
+        volumes:
+            - ./data/mysql/:/var/lib/mysql:delegated
+
+
+#    postgres:
+#        build:
+#            context: docker/postgres
+#            args:
+#                POSTGRES_VERSION: ${POSTGRES_VERSION}
+#        container_name: ${COMPOSE_PROJECT_NAME}_postgres
+#        environment:
+#            POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+#            POSTGRES_USER: ${POSTGRES_USER}
+#            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+#        ports:
+#            - ${EXTERNAL_POSTGRES_PORT}:5432
+#        volumes:
+#            - ./data/postgres/_db:/var/lib/postgresql/data/:delegated
+
+#    mongo:
+#        build:
+#            context: docker/mongo
+#            args:
+#                MONGO_VERSION: ${MONGO_VERSION}
+#        container_name: ${COMPOSE_PROJECT_NAME}_mongo
+#        ports:
+#            - ${EXTERNAL_MONGO_PORT}:27017
+
+    #######################################
+    # Cache
+    #######################################
+#    redis:
+#        build:
+#            context: docker/redis
+#            args:
+#                REDIS_VERSION: ${REDIS_VERSION}
+#        container_name: ${COMPOSE_PROJECT_NAME}_redis
+#        ports:
+#            - ${EXTERNAL_REDIS_PORT}:6379
+#        volumes:
+#          - ./data/redis:/data/:delegated
+
+#    memcached:
+#        build:
+#          context: docker/memcached
+#          args:
+#            MEMCACHED_VERSION: ${MEMCACHED_VERSION}
+#        container_name: ${COMPOSE_PROJECT_NAME}_memcached
+#        ports:
+#          - ${EXTERNAL_MEMCACHED_PORT}:11211
+
+
+    #######################################
+    # Search
+    #######################################
+#    elasticsearch:
+#      build:
+#        context: docker/elasticsearch
+#        args:
+#           ELASTICSEARCH_VERSION: ${ELASTICSEARCH_VERSION}
+#      container_name: ${COMPOSE_PROJECT_NAME}_elasticsearch
+#      ports:
+#        - ${EXTERNAL_ELASTICSEARCH_PORT_REST}:9200
+#        - ${EXTERNAL_ELASTICSEARCH_PORT_NODES}:9300
+#      volumes:
+#        - ./data/elasticsearch/:/usr/share/elasticsearch/data/:delegated
+
+
+#    solr:
+#      build:
+#        context: docker/solr
+#        args:
+#           SOLR_VERSION: ${SOLR_VERSION}
+#      container_name: ${COMPOSE_PROJECT_NAME}_solr
+#      ports:
+#        - ${EXTERNAL_SOLR_PORT}:8983
+#      volumes:
+#        - ./data/solr:/opt/solr/server/solr/data/:delegated
+
+
+#    tika:
+#      build:
+#        context: docker/tika
+#      container_name: ${COMPOSE_PROJECT_NAME}_tika
+#      ports:
+#        - ${EXTERNAL_TIKA_PORT}:9998
+
+
+    #######################################
+    # misc
+    #######################################
+#    mailhog:
+#       build:
+#         context: docker/mailhog
+#         args:
+#            MAILHOG_VERSION: ${MAILHOG_VERSION}
+#       ports:
+#         - ${EXTERNAL_MAILHOG_PORT}:8025
+#       container_name: ${COMPOSE_PROJECT_NAME}_mailhog
+
+#    phpmyadmin:
+#      build:
+#        context: docker/phpmyadmin
+#        args:
+#           PHPMYADMIN_VERSION: ${PHPMYADMIN_VERSION}
+#      container_name: ${COMPOSE_PROJECT_NAME}_phpmyadmin
+#      links:
+#        - mysql
+#      environment:
+#        - PMA_HOST=mysql
+#      ports:
+#        - ${EXTERNAL_PHPMYADMIN_PORT}:80
+#      volumes:
+#        - ./data/phpmyadmin:/sessions:delegated
