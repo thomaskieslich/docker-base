@@ -1,5 +1,6 @@
 # Symfony 4.* setup
-Check and opy composer.json to app Folder.  
+
+Delete all files, include hidden, in app Folder.    
 Run `make bash` for container bash and then   
 `composer create-project symfony/skeleton .`  
 or `composer create-project symfony/website-skeleton .`   

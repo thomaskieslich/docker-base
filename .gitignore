@@ -1,12 +1,12 @@
 /app/*
-!/app/public/index.php
-
 /backup/*
 
 /data/elasticsearch/*
 /data/mysql/*
+/data/phpmyadmin/*
 /data/postgres/*
 /data/redis/*
 /data/solr/*
 
-/.env.*
+!.gitkeep
+!/app/public/index.php
