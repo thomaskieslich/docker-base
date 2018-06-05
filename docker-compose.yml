@@ -125,12 +125,14 @@ services:
 #        - ./data/solr:/opt/solr/server/solr/data/:delegated
 
 
-#    tika:
-#      build:
-#        context: docker/tika
-#      container_name: ${COMPOSE_PROJECT_NAME}_tika
-#      ports:
-#        - ${EXTERNAL_TIKA_PORT}:9998
+    tika:
+      build:
+        context: docker/tika
+        args:
+          TIKA_VERSION: ${TIKA_VERSION}
+      container_name: ${COMPOSE_PROJECT_NAME}_tika
+      ports:
+        - ${EXTERNAL_TIKA_PORT}:9998
 
 
     #######################################
