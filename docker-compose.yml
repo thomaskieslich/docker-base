@@ -36,6 +36,7 @@ services:
         build:
             context: docker/mysql
             args:
+                MYSQL_TYPE: ${MYSQL_TYPE}
                 MYSQL_VERSION: ${MYSQL_VERSION}
         container_name: ${COMPOSE_PROJECT_NAME}_mysql
         environment:
@@ -128,6 +129,8 @@ services:
 #    tika:
 #      build:
 #        context: docker/tika
+#        args:
+#          TIKA_VERSION: ${TIKA_VERSION}
 #      container_name: ${COMPOSE_PROJECT_NAME}_tika
 #      ports:
 #        - ${EXTERNAL_TIKA_PORT}:9998
