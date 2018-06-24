@@ -13,3 +13,6 @@ RUN ln -sf /opt/docker/etc/cron/crontab /etc/cron.d/docker-boilerplate \
 #set passwords
 RUN echo "application:dev" | chpasswd \
     && echo "root:dev" | chpasswd
+
+# Configure volume/workdir
+WORKDIR /app/
