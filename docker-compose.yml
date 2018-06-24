@@ -26,8 +26,10 @@ services:
         environment:
             WEB_DOCUMENT_ROOT: ${WEB_DOCUMENT_ROOT}
             WEB_DOCUMENT_INDEX: ${WEB_DOCUMENT_INDEX}
-            TYPO3_CONTEXT: ${PROVISION_CONTEXT}/Docker
+            WEB_PHP_TIMEOUT: ${WEB_PHP_TIMEOUT}
             PHP_DEBUGGER: ${PHP_DEBUGGER}
+
+            TYPO3_CONTEXT: ${PROVISION_CONTEXT}/Docker
 
     #######################################
     # DB
