@@ -1,7 +1,6 @@
 ARG SERVER_VERSION
 ARG PHP_VERSION
 
-
 FROM webdevops/php-$SERVER_VERSION-dev:$PHP_VERSION
 
 # Deploy scripts/configurations
@@ -14,6 +13,3 @@ RUN ln -sf /opt/docker/etc/cron/crontab /etc/cron.d/docker-boilerplate \
 #set passwords
 RUN echo "application:dev" | chpasswd \
     && echo "root:dev" | chpasswd
-
-# Configure volume/workdir
-WORKDIR /app/
