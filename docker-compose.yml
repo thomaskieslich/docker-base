@@ -41,15 +41,15 @@ services:
                 MYSQL_TYPE: ${MYSQL_TYPE}
                 MYSQL_VERSION: ${MYSQL_VERSION}
         container_name: ${COMPOSE_PROJECT_NAME}_mysql
-        environment:
-            MYSQL_DATABASE: ${MYSQL_DATABASE}
-            MYSQL_USER: ${MYSQL_USER}
-            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
         ports:
             - ${EXTERNAL_MYSQL_PORT}:3306
         volumes:
             - ./data/mysql/:/var/lib/mysql:delegated
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
 
 
 #    postgres:
@@ -158,9 +158,9 @@ services:
 #      container_name: ${COMPOSE_PROJECT_NAME}_phpmyadmin
 #      links:
 #        - mysql
-#      environment:
-#        - PMA_HOST=mysql
 #      ports:
 #        - ${EXTERNAL_PHPMYADMIN_PORT}:80
 #      volumes:
 #        - ./data/phpmyadmin:/sessions:delegated
+#      environment:
+#        - PMA_HOST=mysql
