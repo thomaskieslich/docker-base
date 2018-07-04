@@ -15,7 +15,7 @@ services:
 #            - memcached
 #            - elasticsearch
 #            - solr
-#            - mailhog
+            - mail
         ports:
             - ${EXTERNAL_HTTP_PORT}:80
             - ${EXTERNAL_HTTPS_PORT}:443
@@ -141,14 +141,14 @@ services:
     #######################################
     # misc
     #######################################
-#    mailhog:
-#       build:
-#         context: docker/mailhog
-#         args:
-#            MAILHOG_VERSION: ${MAILHOG_VERSION}
-#       ports:
-#         - ${EXTERNAL_MAILHOG_PORT}:8025
-#       container_name: ${COMPOSE_PROJECT_NAME}_mailhog
+    mail:
+       build:
+         context: docker/mailhog
+         args:
+            MAILHOG_VERSION: ${MAILHOG_VERSION}
+       ports:
+         - ${EXTERNAL_MAILHOG_PORT}:8025
+       container_name: ${COMPOSE_PROJECT_NAME}_mail
 
 #    phpmyadmin:
 #      build:
