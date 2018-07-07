@@ -14,7 +14,7 @@ services:
 #            - redis
 #            - memcached
 #            - elasticsearch
-#            - solr
+            - solr
             - mail
         ports:
             - ${EXTERNAL_HTTP_PORT}:80
@@ -116,16 +116,16 @@ services:
 #        - ./data/elasticsearch/:/usr/share/elasticsearch/data/:delegated
 
 
-#    solr:
-#      build:
-#        context: docker/solr
-#        args:
-#           SOLR_VERSION: ${SOLR_VERSION}
-#      container_name: ${COMPOSE_PROJECT_NAME}_solr
-#      ports:
-#        - ${EXTERNAL_SOLR_PORT}:8983
-#      volumes:
-#        - ./data/solr:/opt/solr/server/solr/data/:delegated
+    solr:
+      build:
+        context: docker/solr
+        args:
+           SOLR_VERSION: ${SOLR_VERSION}
+      container_name: ${COMPOSE_PROJECT_NAME}_solr
+      ports:
+        - ${EXTERNAL_SOLR_PORT}:8983
+      volumes:
+        - ./data/solr:/opt/solr/server/solr/data/
 
 
 #    tika:
