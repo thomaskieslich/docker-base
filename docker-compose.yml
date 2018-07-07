@@ -14,8 +14,8 @@ services:
 #            - redis
 #            - memcached
 #            - elasticsearch
-            - solr
-            - mail
+#            - solr
+#            - mail
         ports:
             - ${EXTERNAL_HTTP_PORT}:80
             - ${EXTERNAL_HTTPS_PORT}:443
@@ -116,16 +116,16 @@ services:
 #        - ./data/elasticsearch/:/usr/share/elasticsearch/data/:delegated
 
 
-    solr:
-      build:
-        context: docker/solr
-        args:
-           SOLR_VERSION: ${SOLR_VERSION}
-      container_name: ${COMPOSE_PROJECT_NAME}_solr
-      ports:
-        - ${EXTERNAL_SOLR_PORT}:8983
-      volumes:
-        - ./data/solr:/opt/solr/server/solr/data/
+#    solr:
+#      build:
+#        context: docker/solr
+#        args:
+#           SOLR_VERSION: ${SOLR_VERSION}
+#      container_name: ${COMPOSE_PROJECT_NAME}_solr
+#      ports:
+#        - ${EXTERNAL_SOLR_PORT}:8983
+#      volumes:
+#        - ./data/solr:/opt/solr/server/solr/data/
 
 
 #    tika:
@@ -141,14 +141,14 @@ services:
     #######################################
     # misc
     #######################################
-    mail:
-       build:
-         context: docker/mailhog
-         args:
-            MAILHOG_VERSION: ${MAILHOG_VERSION}
-       ports:
-         - ${EXTERNAL_MAILHOG_PORT}:8025
-       container_name: ${COMPOSE_PROJECT_NAME}_mail
+#    mail:
+#       build:
+#         context: docker/mailhog
+#         args:
+#            MAILHOG_VERSION: ${MAILHOG_VERSION}
+#       ports:
+#         - ${EXTERNAL_MAILHOG_PORT}:8025
+#       container_name: ${COMPOSE_PROJECT_NAME}_mail
 
 #    phpmyadmin:
 #      build:
