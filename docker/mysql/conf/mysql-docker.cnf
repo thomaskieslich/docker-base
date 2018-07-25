@@ -4,7 +4,8 @@
 ## Charset
 
 character-set-server=utf8
-collation-server=utf8_general_ci
+## utf8_unicode_ci or utf8_general_ci
+collation-server = utf8_unicode_ci
 
 #################################################
 ## Buffers
