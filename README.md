@@ -1,5 +1,6 @@
 # docker-base
-Simple Docker enviroment with .env configuration. Simplify Commands with makefile.
+Simple Docker boilerplate with .env configuration. Simplify Commands with makefile.  
+You should modify the .env and the docker-compose.yml for your project.
 
 First run: ``make init```
 
