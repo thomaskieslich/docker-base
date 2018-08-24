@@ -3,15 +3,15 @@ version: '3'
 services:
   app:
     ## with build
-    build:
-      context: .
-      args:
-        APP_IMAGE: ${APP_IMAGE}
-        APP_TAG: ${APP_TAG}
-    image: ${APP_BUILD}:${APP_BUILD_TAG}
+#    build:
+#      context: .
+#      args:
+#        APP_IMAGE: ${APP_IMAGE}
+#        APP_TAG: ${APP_TAG}
+#    image: ${APP_BUILD}:${APP_BUILD_TAG}
     ## with image only
-    #    image: ${APP_IMAGE}:${APP_TAG}
-    #    working_dir: /app
+    image: ${APP_IMAGE}:${APP_TAG}
+    working_dir: /app
     container_name: ${COMPOSE_PROJECT_NAME}_app
     volumes:
       - ./app:/app:cached
