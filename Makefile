@@ -7,13 +7,15 @@ list:
 #############################
 # Docker machine states
 #############################
-
 build:
+	docker-compose build
+
+init:
 	docker-compose up -d
 
 rebuild:
 	docker-compose stop
-	docker-compose pull
+	docker-compose pull --ignore-pull-failures
 	docker-compose rm --force
 	docker-compose build --no-cache --pull
 	docker-compose up -d --force-recreate --remove-orphans
@@ -36,6 +38,9 @@ state:
 #############################
 # bash
 #############################
+
+run:
+	docker run --rm -it  --user application tkieslich/docker-slim:1.0.0 bash
 
 bash:
 	docker-compose exec --user application app /bin/bash
