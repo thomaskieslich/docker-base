@@ -1,11 +1,13 @@
 # docker-base
-Based on the great [Webdevops Dockerfile](https://github.com/webdevops/Dockerfile).  
+Simple Docker boilerplate with .env configuration. Simplify Commands with makefile.  
+You should modify the .env and the docker-compose.yml for your project.
 
-## First Run
-`make build` create the images defined in docker-compose.yml. After that you can 
-start docker with `make start` and stop with `make stop`.
+First run: ``make init```
 
-The default Configuration runs the current Appache with PHP and MYSQL. 
+Then:
+```
+make start
+make stop
+```
 
-The Idea is that you can easily change Ports and Versions with the .env File 
-and enable/disable Components in docker-compose.yml.
+All Commands with ```make list```.
