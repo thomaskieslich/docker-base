@@ -1,5 +1,15 @@
 # docker-base
-Based on the great [Webdevops Dockerfile](https://github.com/webdevops/Dockerfile).  
-Move the most Configuration to .env File. 
+Simple Docker boilerplate with .env configuration. Simplify Commands with makefile.  
+You should modify the .env and the docker-compose.yml for your project.
 
-Run with make commands. Simply run `make list` to see the commands.
+First run: 
+
+```make init```
+
+Then:
+```
+make start
+make stop
+```
+
+All Commands with ```make list```.

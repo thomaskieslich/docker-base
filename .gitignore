@@ -1,12 +1,7 @@
 /app/*
-/backup/*
-
-/data/elasticsearch/*
-/data/mysql/*
-/data/phpmyadmin/*
-/data/postgres/*
-/data/redis/*
-/data/solr/*
+/data/*
 
 !.gitkeep
 !/app/public/index.php
+
+docker-compose-override.yml

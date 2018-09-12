@@ -1,3 +1,0 @@
-ARG MAILHOG_VERSION
-
-FROM mailhog/mailhog:$MAILHOG_VERSION
