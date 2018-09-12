@@ -13,6 +13,8 @@ build:
 init:
 	docker-compose up -d
 
+up: init
+
 rebuild:
 	docker-compose stop
 	docker-compose pull --ignore-pull-failures
