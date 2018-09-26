@@ -17,6 +17,8 @@ services:
       - ./app:/app:cached
       # php settings
       - ./conf/${PROVISION_CONTEXT}/php.ini:/usr/local/etc/php/conf.d/991-custom.ini
+      # add ssh key for repository access
+      - ./conf/${PROVISION_CONTEXT}/ssh:/home/application/.ssh
     ports:
       - ${EXTERNAL_HTTP_PORT}:80
       - ${EXTERNAL_HTTPS_PORT}:443
