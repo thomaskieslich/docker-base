@@ -15,7 +15,8 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}_app
     volumes:
       - ./app:/app:cached
-      - ./conf/php.ini:/usr/local/etc/php/conf.d/991-custom.ini
+      # php settings
+      - ./conf/${PROVISION_CONTEXT}/php.ini:/usr/local/etc/php/conf.d/991-custom.ini
     ports:
       - ${EXTERNAL_HTTP_PORT}:80
       - ${EXTERNAL_HTTPS_PORT}:443
