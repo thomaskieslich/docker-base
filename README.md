@@ -39,3 +39,52 @@ Change WEB_DOCUMENT_ROOT in .env to '/app/Web/'
 composer create-project neos/neos-base-distribution .
 composer create-project --no-dev neos/neos-base-distribution .
 ```
+
+## Database
+
+### Mysql
+```
+  db:
+    image: ${DB_IMAGE}:${DB_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_db
+    volumes:
+      - ./data/db/:/var/lib/mysql:delegated
+    ports:
+      - ${EXTERNAL_DB_PORT}:3306
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  dbadmin:
+    image: ${DB_ADMIN_IMAGE}:${DB_ADMIN_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_dbadmin
+    volumes:
+      - dbadmin:/sessions:delegated
+    ports:
+      - ${EXTERNAL_DB_ADMIN_PORT}:80
+    environment:
+      - PMA_HOST=db
+volumes:
+  dbadmin:
+```
+
+### postgres
+```
+db:
+    build:
+        context: docker/postgres
+        args:
+            POSTGRES_VERSION: ${POSTGRES_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_postgres
+    environment:
+        POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+        - ${EXTERNAL_POSTGRES_PORT}:5432
+    volumes:
+        - ./data/postgres/_db:/var/lib/postgresql/data/:delegated
+```

@@ -37,11 +37,23 @@ services:
     ports:
       - ${EXTERNAL_DB_PORT}:3306
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  dbadmin:
+    image: ${DB_ADMIN_IMAGE}:${DB_ADMIN_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_dbadmin
+    volumes:
+      - dbadmin:/sessions:delegated
+    ports:
+      - ${EXTERNAL_DB_ADMIN_PORT}:80
+    environment:
+      - PMA_HOST=db
+volumes:
+  dbadmin:
 
 #  cache:
 #    image: ${CACHE_IMAGE}:${CACHE_TAG}
@@ -65,15 +77,3 @@ services:
 #    container_name: ${COMPOSE_PROJECT_NAME}_mail
 #    ports:
 #      - ${EXTERNAL_MAIL_PORT}:8025
-
-#  phpmyadmin:
-#    image: ${DB_ADMIN_IMAGE}:${DB_ADMIN_TAG}
-#    container_name: ${COMPOSE_PROJECT_NAME}_dbadmin
-#    volumes:
-#      - phpmyadmin:/sessions:delegated
-#    ports:
-#      - ${EXTERNAL_DB_ADMIN_PORT}:80
-#    environment:
-#      - PMA_HOST=db
-#volumes:
-#  phpmyadmin:
