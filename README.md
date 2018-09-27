@@ -40,7 +40,7 @@ composer create-project neos/neos-base-distribution .
 composer create-project --no-dev neos/neos-base-distribution .
 ```
 
-## Database
+## Database Examples
 
 ### Mysql
 ```
@@ -72,19 +72,44 @@ volumes:
 ```
 
 ### postgres
+
+.env
 ```
-db:
-    build:
-        context: docker/postgres
-        args:
-            POSTGRES_VERSION: ${POSTGRES_VERSION}
-    container_name: ${COMPOSE_PROJECT_NAME}_postgres
+# db
+## mysql postgres mariadb
+DB_IMAGE=postgres
+DB_TAG=10
+
+DB_DATABASE=app_db
+DB_USER=dev
+DB_PASSWORD=dev
+DB_ROOT_PASSWORD=dev
+
+# phpmyadmin dpage/pgadmin4
+DB_ADMIN_IMAGE=dpage/pgadmin4
+DB_ADMIN_TAG=3
+```
+
+docker-compose.yml
+```
+  db:
+    image: ${DB_IMAGE}:${DB_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_db
     environment:
-        POSTGRES_DATABASE: ${POSTGRES_DATABASE}
-        POSTGRES_USER: ${POSTGRES_USER}
-        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
-        - ${EXTERNAL_POSTGRES_PORT}:5432
+      - ${EXTERNAL_DB_PORT}:5432
     volumes:
-        - ./data/postgres/_db:/var/lib/postgresql/data/:delegated
+      - ./data/db/:/var/lib/postgresql/data/:delegated
+
+  dbadmin:
+    image: ${DB_ADMIN_IMAGE}:${DB_ADMIN_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_dbadmin
+    ports:
+      - ${EXTERNAL_DB_ADMIN_PORT}:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: dev@test
+      PGADMIN_DEFAULT_PASSWORD: dev
 ```
