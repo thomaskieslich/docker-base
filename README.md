@@ -59,7 +59,7 @@ DB_PASSWORD=dev
 DB_ROOT_PASSWORD=dev
 
 # phpmyadmin dpage/pgadmin4
-DB_ADMIN_IMAGE=phpmyadmin
+DB_ADMIN_IMAGE=phpmyadmin/phpmyadmin
 DB_ADMIN_TAG=4.8
 ```
 
