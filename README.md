@@ -42,7 +42,7 @@ composer create-project --no-dev neos/neos-base-distribution .
 
 ## Database Examples
 
-### Mysql
+### Mysql / phpmyadmin
 .env
 ```
 EXTERNAL_DB_PORT=3306
@@ -92,7 +92,51 @@ volumes:
   dbadmin:
 ```
 
-### postgres
+### mariadb / adminer
+.env
+```
+EXTERNAL_DB_PORT=3306
+EXTERNAL_DB_ADMIN_PORT=8080
+
+# db
+## mysql postgres mariadb
+DB_IMAGE=mariadb
+DB_TAG=10
+
+DB_DATABASE=app_db
+DB_USER=dev
+DB_PASSWORD=dev
+DB_ROOT_PASSWORD=dev
+
+# phpmyadmin dpage/pgadmin4 adminer
+DB_ADMIN_IMAGE=adminer
+DB_ADMIN_TAG=4
+```
+
+docker-compose.yml
+```
+  db:
+    image: ${DB_IMAGE}:${DB_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_db
+    volumes:
+      - ./data/db/:/var/lib/mysql:delegated
+    ports:
+      - ${EXTERNAL_DB_PORT}:3306
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  dbadmin:
+    image: ${DB_ADMIN_IMAGE}:${DB_ADMIN_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_dbadmin
+    ports:
+      - ${EXTERNAL_DB_ADMIN_PORT}:8080
+```
+
+### postgres / pgadmin
 
 .env
 ```
