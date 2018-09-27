@@ -43,6 +43,27 @@ composer create-project --no-dev neos/neos-base-distribution .
 ## Database Examples
 
 ### Mysql
+.env
+```
+EXTERNAL_DB_PORT=3306
+EXTERNAL_DB_ADMIN_PORT=8080
+
+# db
+## mysql postgres mariadb
+DB_IMAGE=postgres
+DB_TAG=10
+
+DB_DATABASE=app_db
+DB_USER=dev
+DB_PASSWORD=dev
+DB_ROOT_PASSWORD=dev
+
+# phpmyadmin dpage/pgadmin4
+DB_ADMIN_IMAGE=phpmyadmin
+DB_ADMIN_TAG=4.8
+```
+
+docker-compose.yml
 ```
   db:
     image: ${DB_IMAGE}:${DB_TAG}
@@ -75,6 +96,9 @@ volumes:
 
 .env
 ```
+EXTERNAL_DB_PORT=5432
+EXTERNAL_DB_ADMIN_PORT=8080
+
 # db
 ## mysql postgres mariadb
 DB_IMAGE=postgres
