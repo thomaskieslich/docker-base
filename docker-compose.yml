@@ -7,10 +7,12 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}_app
     volumes:
       - ./app:/app:cached
-      # php settings
+      # add php settings
       - ./conf/${PROVISION_CONTEXT}/php.ini:/usr/local/etc/php/conf.d/991-custom.ini
       # add ssh key for repository access
       - ./conf/${PROVISION_CONTEXT}/ssh:/home/application/.ssh
+      # replace ssl certs
+      - ./conf/${PROVISION_CONTEXT}/ssl:/opt/docker/etc/httpd/ssl/
     ports:
       - ${EXTERNAL_HTTP_PORT}:80
       - ${EXTERNAL_HTTPS_PORT}:443
