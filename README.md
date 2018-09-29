@@ -181,3 +181,43 @@ docker-compose.yml
       PGADMIN_DEFAULT_EMAIL: dev@test
       PGADMIN_DEFAULT_PASSWORD: dev
 ```
+
+### mongo / mongoclient
+
+.env
+```
+EXTERNAL_DB_PORT=27017
+EXTERNAL_DB_ADMIN_PORT=3000
+
+# db
+## mysql postgres mariadb mongo
+DB_IMAGE=mongo
+DB_TAG=4
+
+DB_DATABASE=app_db
+DB_USER=dev
+DB_PASSWORD=dev
+DB_ROOT_PASSWORD=dev
+
+# phpmyadmin dpage/pgadmin4 mongoclient
+DB_ADMIN_IMAGE=mongoclient/mongoclient
+DB_ADMIN_TAG=2.2.0
+```
+
+docker-compose.yml
+```
+  db:
+    image: ${DB_IMAGE}:${DB_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_db
+    ports:
+      - ${EXTERNAL_DB_PORT}:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+
+  dbadmin:
+    image: ${DB_ADMIN_IMAGE}:${DB_ADMIN_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_dbadmin
+    ports:
+      - ${EXTERNAL_DB_ADMIN_PORT}:3000
+```
