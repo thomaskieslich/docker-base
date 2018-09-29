@@ -10,10 +10,8 @@ list:
 build:
 	docker-compose build
 
-init:
+up:
 	docker-compose up -d
-
-up: init
 
 rebuild:
 	docker-compose stop

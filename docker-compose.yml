@@ -2,14 +2,6 @@ version: '3'
 
 services:
   app:
-    ## with build
-#    build:
-#      context: .
-#      args:
-#        APP_IMAGE: ${APP_IMAGE}
-#        APP_TAG: ${APP_TAG}
-#    image: ${APP_BUILD}:${APP_BUILD_TAG}
-    ## with image only
     image: ${APP_IMAGE}:${APP_TAG}
     working_dir: /app
     container_name: ${COMPOSE_PROJECT_NAME}_app
@@ -46,34 +38,7 @@ services:
   dbadmin:
     image: ${DB_ADMIN_IMAGE}:${DB_ADMIN_TAG}
     container_name: ${COMPOSE_PROJECT_NAME}_dbadmin
-    volumes:
-      - dbadmin:/sessions:delegated
     ports:
       - ${EXTERNAL_DB_ADMIN_PORT}:80
     environment:
       - PMA_HOST=db
-volumes:
-  dbadmin:
-
-#  cache:
-#    image: ${CACHE_IMAGE}:${CACHE_TAG}
-#    container_name: ${COMPOSE_PROJECT_NAME}_cache
-#    volumes:
-#      - ./data/cache:/data/:delegated
-#    ports:
-#      - ${EXTERNAL_CACHE_PORT}:6379
-#    command: redis-server --appendonly yes
-
-#  search:
-#    image: ${SEARCH_IMAGE}:${SEARCH_TAG}
-#    container_name: ${COMPOSE_PROJECT_NAME}_search
-#    volumes:
-#      - ./data/search:/opt/solr/server/solr/data/:delegated
-#    ports:
-#      - ${EXTERNAL_SEARCH_PORT}:8983
-
-#  mail:
-#    image: ${MAIL_IMAGE}:${MAIL_TAG}
-#    container_name: ${COMPOSE_PROJECT_NAME}_mail
-#    ports:
-#      - ${EXTERNAL_MAIL_PORT}:8025

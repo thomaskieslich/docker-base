@@ -4,7 +4,7 @@ You should modify the .env and the docker-compose.yml for your project.
 
 First run: 
 
-```make init```
+```make up```
 
 Then:
 ```
