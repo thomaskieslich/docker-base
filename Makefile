@@ -7,9 +7,6 @@ list:
 #############################
 # Docker machine states
 #############################
-build:
-	docker-compose build
-
 up:
 	docker-compose up -d
 
@@ -39,11 +36,15 @@ state:
 # bash
 #############################
 
-run:
-	docker run --rm -it  --user application tkieslich/docker-slim:1.0.0 bash
-
 bash:
 	docker-compose exec --user application app /bin/bash
+
+
+ci:
+	docker-compose exec --user application app composer install
+
+cu:
+	docker-compose exec --user application app composer update
 
 root:
 	docker-compose exec --user root app /bin/bash
