@@ -22,8 +22,7 @@ after run ```make bash```.
 ###TYPO3
 ```
 composer create-project typo3/cms-base-distribution . ^8
-
-composer create-project typo3/cms-base-distribution . ^9
+composer require typo3/cms-introduction:^3.0
 ```
 
 ### Symfony
@@ -40,7 +39,7 @@ composer create-project neos/neos-base-distribution .
 composer create-project --no-dev neos/neos-base-distribution .
 ```
 
-## Database Examples
+## Database Snippets
 
 ### Mysql / phpmyadmin
 .env
@@ -82,14 +81,10 @@ docker-compose.yml
   dbadmin:
     image: ${DB_ADMIN_IMAGE}:${DB_ADMIN_TAG}
     container_name: ${COMPOSE_PROJECT_NAME}_dbadmin
-    volumes:
-      - dbadmin:/sessions:delegated
     ports:
       - ${EXTERNAL_DB_ADMIN_PORT}:80
     environment:
       - PMA_HOST=db
-volumes:
-  dbadmin:
 ```
 
 ### mariadb / adminer
@@ -220,4 +215,39 @@ docker-compose.yml
     container_name: ${COMPOSE_PROJECT_NAME}_dbadmin
     ports:
       - ${EXTERNAL_DB_ADMIN_PORT}:3000
+```
+
+## Cache Snippets
+
+### redis / redis-stats
+.env
+```
+EXTERNAL_CACHE_PORT=6379
+EXTERNAL_CACHE_STAT_PORT=8081
+
+# cache
+CACHE_IMAGE=redis
+CACHE_TAG=4
+
+CACHE_STAT_IMAGE=insready/redis-stat
+CACHE_STAT_TAG=latest
+```
+
+docker-compose.yml
+```
+  cache:
+    image: ${CACHE_IMAGE}:${CACHE_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_cache
+    volumes:
+      - ./data/cache:/data:delegated
+    ports:
+      - ${EXTERNAL_CACHE_PORT}:6379
+    command: redis-server --appendonly yes
+
+  cache-stat:
+    image: ${CACHE_STAT_IMAGE}:${CACHE_STAT_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_cachestat
+    ports:
+      - ${EXTERNAL_CACHE_STAT_PORT}:63790
+    command: --server cache:6379
 ```
