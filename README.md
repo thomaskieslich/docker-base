@@ -217,8 +217,29 @@ docker-compose.yml
       - ${EXTERNAL_DB_ADMIN_PORT}:3000
 ```
 
-## Cache Snippets
+## Mail Snippets
 
+### mailhog
+SMTP Server is mail:1025.  
+.env
+```
+EXTERNAL_MAIL_PORT=8025
+
+# mail
+MAIL_IMAGE=mailhog/mailhog
+MAIL_TAG=v1.0.0
+```
+
+docker-compose.yml
+```
+  mail:
+    image: ${MAIL_IMAGE}:${MAIL_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_mail
+    ports:
+      - ${EXTERNAL_MAIL_PORT}:8025
+```
+
+## Cache Snippets
 ### redis / redis-stats
 .env
 ```
