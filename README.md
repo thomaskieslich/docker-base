@@ -272,3 +272,41 @@ docker-compose.yml
       - ${EXTERNAL_CACHE_STAT_PORT}:63790
     command: --server cache:6379
 ```
+
+## Search Snippets
+
+### solr / tika
+.env
+```
+EXTERNAL_SOLR_PORT=8983
+EXTERNAL_TIKA_PORT=9998
+
+# search
+SOLR_IMAGE=solr
+SOLR_TAG=6.6.3
+
+TIKA_IMAGE=logicalspark/docker-tikaserver
+TIKA_TAG=1.18
+```
+
+docker-compose.yml
+```
+  solr:
+    image: ${SOLR_IMAGE}:${SOLR_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_solr
+    volumes:
+      - ./conf/solr/configsets:/opt/solr/server/solr/configsets
+      - ./conf/solr/cores:/opt/solr/server/solr/cores
+      - ./conf/solr/solr.xml:/opt/solr/server/solr/solr.xml
+
+      - ./data/search:/opt/solr/server/solr/data/:delegated
+    ports:
+      - ${EXTERNAL_SOLR_PORT}:8983
+
+  tika:
+    image: ${TIKA_IMAGE}:${TIKA_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_tika
+    ports:
+      - ${EXTERNAL_TIKA_PORT}:9998
+
+```
