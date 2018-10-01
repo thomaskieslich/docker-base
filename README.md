@@ -308,5 +308,41 @@ docker-compose.yml
     container_name: ${COMPOSE_PROJECT_NAME}_tika
     ports:
       - ${EXTERNAL_TIKA_PORT}:9998
+```
 
+### elasticsesarch / kibana
+.env
+```
+EXTERNAL_ELASTICSEARCH_PORT_REST=9200
+EXTERNAL_ELASTICSEARCH_PORT_NODES=9300
+EXTERNAL_KIBANA_PORT=5601
+
+# search
+ELASTICSEARCH_IMAGE=docker.elastic.co/elasticsearch/elasticsearch
+ELASTICSEARCH_TAG=5.6.12
+
+KIBANA_IMAGE=docker.elastic.co/kibana/kibana
+```
+
+docker-compose.yml
+```
+  elasticsearch:
+    image: ${ELASTICSEARCH_IMAGE}:${ELASTICSEARCH_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_elasticsearch
+    ports:
+      - ${EXTERNAL_ELASTICSEARCH_PORT_REST}:9200
+      - ${EXTERNAL_ELASTICSEARCH_PORT_NODES}:9300
+    volumes:
+      - ./data/elasticsearch/:/usr/share/elasticsearch/data/:delegated
+    environment:
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms750m -Xmx750m
+
+  kibana:
+    image: ${KIBANA_IMAGE}:${ELASTICSEARCH_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_kibana
+    ports:
+      - ${EXTERNAL_KIBANA_PORT}:5601
+    environment:
+      - xpack.security.enabled=false
 ```
