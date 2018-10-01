@@ -9,6 +9,8 @@ services:
       - ./app:/app:cached
       # add php settings
       - ./conf/${PROVISION_CONTEXT}/php.ini:/usr/local/etc/php/conf.d/991-custom.ini
+      # add crontab
+      - ./conf/cron/crontab:/var/spool/cron/crontabs/application
       # add ssh key for repository access
       - ./conf/${PROVISION_CONTEXT}/ssh:/home/application/.ssh
       # replace ssl certs
