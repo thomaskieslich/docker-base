@@ -39,6 +39,47 @@ composer create-project neos/neos-base-distribution .
 composer create-project --no-dev neos/neos-base-distribution .
 ```
 
+## Hints
+### cron
+To run crontabs uncomment the Job in conf/cron/crontab (TYPO3 Scheduler) or add your own.
+Then uncomment this Line in docker-compose.yml.
+```yaml
+- ./conf/cron/crontab:/var/spool/cron/crontabs/application
+```
+
+### ssh key
+While Development you need sometimes access to key protected repositories. 
+You can add your Keys and .config files to Development/Production ssh Folder.
+Then uncomment this Line in docker-compose.yml.
+```yaml
+- ./conf/${PROVISION_CONTEXT}/ssh:/home/application/.ssh
+```
+
+### ssl certs
+Default ssl cert are for *.vm. If you need another cert then copy it to the
+conf Development/Production ssl Folder.
+Then uncomment this Line in docker-compose.yml.
+```yaml
+- ./conf/${PROVISION_CONTEXT}/ssl:/opt/docker/etc/httpd/ssl/
+```
+current certs are created with:
+```bash
+openssl req \
+    -newkey rsa:2048 \
+    -x509 \
+    -nodes \
+    -keyout server.key \
+    -new \
+    -out server.crt \
+    -subj /CN=\*.example.org \
+    -reqexts SAN \
+    -extensions SAN \
+    -config <(cat /System/Library/OpenSSL/openssl.cnf \
+        <(printf '[SAN]\nsubjectAltName=DNS:\*.example.org')) \
+    -sha256 \
+    -days 3650
+ ``` 
+
 ## Database Snippets
 
 ### Mysql / phpmyadmin
