@@ -63,7 +63,7 @@ DB_ADMIN_TAG=4.8
 ```
 
 docker-compose.yml
-```
+```yaml
   db:
     image: ${DB_IMAGE}:${DB_TAG}
     container_name: ${COMPOSE_PROJECT_NAME}_db
@@ -109,7 +109,7 @@ DB_ADMIN_TAG=4
 ```
 
 docker-compose.yml
-```
+```yaml
   db:
     image: ${DB_IMAGE}:${DB_TAG}
     container_name: ${COMPOSE_PROJECT_NAME}_db
@@ -154,7 +154,7 @@ DB_ADMIN_TAG=3
 ```
 
 docker-compose.yml
-```
+```yaml
   db:
     image: ${DB_IMAGE}:${DB_TAG}
     container_name: ${COMPOSE_PROJECT_NAME}_db
@@ -200,7 +200,7 @@ DB_ADMIN_TAG=2.2.0
 ```
 
 docker-compose.yml
-```
+```yaml
   db:
     image: ${DB_IMAGE}:${DB_TAG}
     container_name: ${COMPOSE_PROJECT_NAME}_db
@@ -231,7 +231,7 @@ MAIL_TAG=v1.0.0
 ```
 
 docker-compose.yml
-```
+```yaml
   mail:
     image: ${MAIL_IMAGE}:${MAIL_TAG}
     container_name: ${COMPOSE_PROJECT_NAME}_mail
@@ -255,7 +255,7 @@ CACHE_STAT_TAG=latest
 ```
 
 docker-compose.yml
-```
+```yaml
   cache:
     image: ${CACHE_IMAGE}:${CACHE_TAG}
     container_name: ${COMPOSE_PROJECT_NAME}_cache
@@ -290,7 +290,7 @@ TIKA_TAG=1.18
 ```
 
 docker-compose.yml
-```
+```yaml
   solr:
     image: ${SOLR_IMAGE}:${SOLR_TAG}
     container_name: ${COMPOSE_PROJECT_NAME}_solr
@@ -325,7 +325,7 @@ KIBANA_IMAGE=docker.elastic.co/kibana/kibana
 ```
 
 docker-compose.yml
-```
+```yaml
   elasticsearch:
     image: ${ELASTICSEARCH_IMAGE}:${ELASTICSEARCH_TAG}
     container_name: ${COMPOSE_PROJECT_NAME}_elasticsearch
