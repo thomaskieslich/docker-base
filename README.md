@@ -42,6 +42,7 @@ composer create-project --no-dev neos/neos-base-distribution .
 ## Hints
 ### cron
 To run crontabs uncomment the Job in conf/cron/crontab (TYPO3 Scheduler) or add your own.
+If possible set you local crontab to read-only (0600) or try ```make crontab```.
 Then uncomment this Line in docker-compose.yml.
 ```yaml
 - ./conf/cron/crontab:/var/spool/cron/crontabs/application
