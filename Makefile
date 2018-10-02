@@ -46,5 +46,10 @@ ci: ## run composer install inside the app Container
 cu: ## run composer update inside the app Container
 	docker-compose exec --user application app composer update
 
+crontab: ## make crontab readonly
+	docker-compose exec --user root app /bin/bash -c "chmod 0600 /var/spool/cron/crontabs/application"
+	docker-compose stop
+	docker-compose start
+
 root: ## open a bash inside the app Container with User root
 	docker-compose exec --user root app /bin/bash
