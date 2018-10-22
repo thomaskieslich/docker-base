@@ -262,7 +262,6 @@ docker-compose.yml
 ## Mail Snippets
 
 ### mailhog
-SMTP Server is mail:1025.  
 .env
 ```
 EXTERNAL_MAIL_PORT=8025
@@ -280,6 +279,11 @@ docker-compose.yml
     ports:
       - ${EXTERNAL_MAIL_PORT}:8025
 ```
+
+- TYPO3 Mail Settings
+'transport' => 'smtp'
+'transport_smtp_server' => 'mail:1025'
+
 
 ## Cache Snippets
 ### redis / redis-stats
