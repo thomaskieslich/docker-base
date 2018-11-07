@@ -9,6 +9,8 @@ services:
       - ./app:/app:cached
       # add php settings
       - ./conf/${PROVISION_CONTEXT}/php.ini:/usr/local/etc/php/conf.d/991-custom.ini
+      # add php xdebug profile paths
+      - ./data/php-profiles/:/tmp/debug/:delegated
       # add ssh key for repository access
       #- ./conf/${PROVISION_CONTEXT}/ssh:/home/application/.ssh
       # replace ssl certs
