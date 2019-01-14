@@ -3,6 +3,7 @@
 
 /app/*
 !/app/public/index.php
+!/app/composer.json
 
 /data/*
 
