@@ -1,58 +1,55 @@
-MAKEFLAGS += --silent
+.PHONY: help
+.DEFAULT_GOAL := help
 
-
-list:
-	sh -c "echo; $(MAKE) -p no_targets__ | awk -F':' '/^[a-zA-Z0-9][^\$$#\/\\t=]*:([^=]|$$)/ {split(\$$1,A,/ /);for(i in A)print A[i]}' | grep -v '__\$$' | grep -v 'Makefile'| sort"
+## from https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
+help:
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-10s\033[0m %s\n", $$1, $$2}'
 
 #############################
-# Docker machine states
+# Docker container states
 #############################
-build:
-	docker-compose build
-
-init:
+up: ## Build Docker Containers for the first Time
 	docker-compose up -d
 
-up: init
+start: ## start Containers
+	docker-compose start
 
-rebuild:
+stop: ## stop Containers
+	docker-compose stop
+
+restart: stop start ## restart Containers
+
+rebuild: ## Stop, remove and rebuild all Containers
 	docker-compose stop
 	docker-compose pull --ignore-pull-failures
 	docker-compose rm --force
 	docker-compose build --no-cache --pull
 	docker-compose up -d --force-recreate --remove-orphans
 
-start:
-	docker-compose start
-
-stop:
-	docker-compose stop
-
-restart: stop start
-
-kill:
+kill: ## Stop and remove all Containers
 	docker-compose stop
 	docker-compose rm --force
 
-state:
+state: ## show current state all Containers
 	docker-compose ps
 
 #############################
 # bash
 #############################
 
-run:
-	docker run --rm -it  --user application tkieslich/docker-slim:1.0.0 bash
-
-bash:
+bash: ## open a bash inside the app Container with User application
 	docker-compose exec --user application app /bin/bash
 
-root:
+ci: ## run composer install inside the app Container
+	docker-compose exec --user application app composer install
+
+cu: ## run composer update inside the app Container
+	docker-compose exec --user application app composer update
+
+crontab: ## make crontab readonly
+	docker-compose exec --user root app /bin/bash -c "chmod 0600 /var/spool/cron/crontabs/application"
+	docker-compose stop
+	docker-compose start
+
+root: ## open a bash inside the app Container with User root
 	docker-compose exec --user root app /bin/bash
-
-
-#############################
-# Argument fix workaround
-#############################
-%:
-	@:

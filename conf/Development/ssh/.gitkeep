@@ -1,0 +1,7 @@
+/app/*
+/data/*
+
+!.gitkeep
+!/app/public/index.php
+
+docker-compose-override.yml
