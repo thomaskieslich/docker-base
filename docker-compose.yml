@@ -15,7 +15,7 @@ services:
       #- ./conf/${PROVISION_CONTEXT}/ssh:/home/application/.ssh
       # replace ssl certs
       #- ./conf/${PROVISION_CONTEXT}/ssl:/opt/docker/etc/httpd/ssl/
-      # add crontab
+      # add crontab (uncomment entry in crontab)
       #- ./conf/cron/crontab:/var/spool/cron/crontabs/application
     ports:
       - ${EXTERNAL_HTTP_PORT}:80
@@ -25,6 +25,8 @@ services:
       WEB_DOCUMENT_INDEX: ${WEB_DOCUMENT_INDEX}
       WEB_PHP_TIMEOUT: ${WEB_PHP_TIMEOUT}
       PHP_DEBUGGER: ${PHP_DEBUGGER}
+      BLACKFIRE_SERVER_ID: ${BLACKFIRE_SERVER_ID}
+      BLACKFIRE_SERVER_TOKEN: ${BLACKFIRE_SERVER_TOKEN}
       TYPO3_CONTEXT: ${PROVISION_CONTEXT}
 
   db:
@@ -53,4 +55,4 @@ services:
     image: ${MAIL_IMAGE}:${MAIL_TAG}
     container_name: ${COMPOSE_PROJECT_NAME}_mail
     ports:
-    - ${EXTERNAL_MAIL_PORT}:8025
+      - ${EXTERNAL_MAIL_PORT}:8025
