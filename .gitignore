@@ -1,7 +1,9 @@
+.DS_Store
+.idea
+
 /app/*
+!/app/public/index.php
+
 /data/*
 
 !.gitkeep
-!/app/public/index.php
-
-docker-compose-override.yml
