@@ -6,4 +6,8 @@
 
 /data/*
 
-!.gitkeep
+**/ssh/*
+!**/ssh/.gitkeep
+
+ssl/*
+!**/ssl/.gitkeep
