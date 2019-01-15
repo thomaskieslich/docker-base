@@ -21,7 +21,7 @@ after run ```make bash```.
 
 ###TYPO3
 ```
-composer create-project typo3/cms-base-distribution . ^8
+composer create-project typo3/cms-base-distribution . ^9
 composer require typo3/cms-introduction:^3.0
 ```
 
