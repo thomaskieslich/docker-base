@@ -1,2 +1,2 @@
 # m h  dom mon dow  user  command
-*/5 * * * * /usr/local/bin/php /app/public/typo3/sysext/core/bin/typo3 scheduler:run
+*/15 * * * * /usr/local/bin/php /app/public/typo3/sysext/core/bin/typo3 scheduler:run
