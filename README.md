@@ -83,7 +83,7 @@ openssl req \
 
 ## Database Snippets
 
-### Mysql / phpmyadmin
+### Mysql
 .env
 ```
 MYSQL_PORT=3306
@@ -94,10 +94,6 @@ MYSQL_DATABASE=app_db
 MYSQL_USER=dev
 MYSQL_PASSWORD=dev
 MYSQL_ROOT_PASSWORD=dev
-
-PHPMYADMIN_PORT=8080
-PHPMYADMIN_IMAGE=phpmyadmin/phpmyadmin
-PHPMYADMIN_TAG=4.8
 ```
 
 docker-compose.yml
@@ -115,14 +111,6 @@ docker-compose.yml
         MYSQL_PASSWORD: ${MYSQL_PASSWORD}
         MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-
-  phpmyadmin:
-      image: ${PHPMYADMIN_IMAGE}:${PHPMYADMIN_TAG}
-      container_name: ${COMPOSE_PROJECT_NAME}_phpmyadmin
-      ports:
-        - ${EXTERNAL_PHPMYADMIN_PORT}:80
-      environment:
-        - PMA_HOST=mysql
 ```
 
 #### Backup/Restore Examples
@@ -276,6 +264,27 @@ docker-compose.yml
     container_name: ${COMPOSE_PROJECT_NAME}_dbadmin
     ports:
       - ${EXTERNAL_DB_ADMIN_PORT}:3000
+```
+
+##Datbase Admin Snippets
+
+### phpmyadmin
+.env
+```
+PHPMYADMIN_PORT=8080
+PHPMYADMIN_IMAGE=phpmyadmin/phpmyadmin
+PHPMYADMIN_TAG=4.8
+```
+
+docker-compose.yml
+```yaml
+  phpmyadmin:
+      image: ${PHPMYADMIN_IMAGE}:${PHPMYADMIN_TAG}
+      container_name: ${COMPOSE_PROJECT_NAME}_phpmyadmin
+      ports:
+        - ${EXTERNAL_PHPMYADMIN_PORT}:80
+      environment:
+        - PMA_HOST=mysql
 ```
 
 ## Mail Snippets
