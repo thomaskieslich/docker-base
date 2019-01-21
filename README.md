@@ -41,7 +41,7 @@ composer create-project --no-dev neos/neos-base-distribution .
 
 ## Hints
 ### cron
-To run crontabs uncomment the Job in conf/cron/crontab (TYPO3 Scheduler) or add your own.
+To run crontabs change the Job in conf/cron/crontab (TYPO3 Scheduler) or add your own.
 If possible set you local crontab to read-only (0600) or try ```make crontab```.
 Then uncomment this Line in docker-compose.yml.
 ```yaml
@@ -86,47 +86,44 @@ openssl req \
 ### Mysql / phpmyadmin
 .env
 ```
-EXTERNAL_DB_PORT=3306
-EXTERNAL_DB_ADMIN_PORT=8080
+EXTERNAL_MYSQL_PORT=3306
+EXTERNAL_PHPMYADMIN_PORT=8080
 
-# db
-## mysql postgres mariadb
-DB_IMAGE=postgres
-DB_TAG=10
+MYSQL_IMAGE=mysql
+MYSQL_TAG=5.7
 
-DB_DATABASE=app_db
-DB_USER=dev
-DB_PASSWORD=dev
-DB_ROOT_PASSWORD=dev
+MYSQL_DATABASE=app_db
+MYSQL_USER=dev
+MYSQL_PASSWORD=dev
+MYSQL_ROOT_PASSWORD=dev
 
-# phpmyadmin dpage/pgadmin4
-DB_ADMIN_IMAGE=phpmyadmin/phpmyadmin
-DB_ADMIN_TAG=4.8
+PHPMYADMIN_IMAGE=phpmyadmin/phpmyadmin
+PHPMYADMIN_TAG=4.8
 ```
 
 docker-compose.yml
 ```yaml
-  db:
-    image: ${DB_IMAGE}:${DB_TAG}
-    container_name: ${COMPOSE_PROJECT_NAME}_db
-    volumes:
-      - ./data/db/:/var/lib/mysql:delegated
-    ports:
-      - ${EXTERNAL_DB_PORT}:3306
-    environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+  mysql:
+      image: ${DB_IMAGE}:${DB_TAG}
+      container_name: ${COMPOSE_PROJECT_NAME}_mysql
+      volumes:
+        - ./data/mysql/:/var/lib/mysql:delegated
+      ports:
+        - ${EXTERNAL_MYSQL_PORT}:3306
+      environment:
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
-  dbadmin:
-    image: ${DB_ADMIN_IMAGE}:${DB_ADMIN_TAG}
-    container_name: ${COMPOSE_PROJECT_NAME}_dbadmin
-    ports:
-      - ${EXTERNAL_DB_ADMIN_PORT}:80
-    environment:
-      - PMA_HOST=db
+  phpmyadmin:
+      image: ${PHPMYADMIN_IMAGE}:${PHPMYADMIN_TAG}
+      container_name: ${COMPOSE_PROJECT_NAME}_phpmyadmin
+      ports:
+        - ${EXTERNAL_PHPMYADMIN_PORT}:80
+      environment:
+        - PMA_HOST=mysql
 ```
 
 #### Backup/Restore Examples
