@@ -15,7 +15,7 @@ services:
       #- ./conf/${PROVISION_CONTEXT}/ssh:/home/application/.ssh
       # replace ssl certs
       #- ./conf/${PROVISION_CONTEXT}/ssl:/opt/docker/etc/httpd/ssl/
-      # add crontab
+      # add crontab (run make crontab after rebuild)
       #- ./conf/cron/crontab:/var/spool/cron/crontabs/application
     ports:
       - ${EXTERNAL_HTTP_PORT}:80

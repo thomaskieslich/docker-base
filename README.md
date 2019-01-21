@@ -312,15 +312,15 @@ docker-compose.yml
 ### redis / redis-stats
 .env
 ```
-EXTERNAL_CACHE_PORT=6379
-EXTERNAL_CACHE_STAT_PORT=8081
+EXTERNAL_REDIS_PORT=6379
+EXTERNAL_REDIS_STAT_PORT=8081
 
-# cache
-CACHE_IMAGE=redis
-CACHE_TAG=4
+# redis
+REDIS_IMAGE=redis
+REDIS_TAG=4
 
-CACHE_STAT_IMAGE=insready/redis-stat
-CACHE_STAT_TAG=latest
+REDIS_STAT_IMAGE=insready/redis-stat
+REDIS_STAT_TAG=latest
 ```
 
 docker-compose.yml
