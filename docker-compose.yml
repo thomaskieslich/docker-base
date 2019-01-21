@@ -30,7 +30,7 @@ services:
       TYPO3_CONTEXT: ${PROVISION_CONTEXT}
 
   mysql:
-    image: ${DB_IMAGE}:${DB_TAG}
+    image: ${MYSQL_IMAGE}:${MYSQL_TAG}
     container_name: ${COMPOSE_PROJECT_NAME}_mysql
     volumes:
       - ./data/mysql/:/var/lib/mysql:delegated
