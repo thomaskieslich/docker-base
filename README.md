@@ -348,10 +348,13 @@ docker-compose.yml
 
 ## Cache Snippets
 ### redis / redis-stats
+https://hub.docker.com/r/insready/redis-stat
+
+
 .env
 ```
-EXTERNAL_REDIS_PORT=6379
-EXTERNAL_REDIS_STAT_PORT=8081
+REDIS_PORT=6379
+REDIS_STAT_PORT=8081
 
 # redis
 REDIS_IMAGE=redis
@@ -363,21 +366,21 @@ REDIS_STAT_TAG=latest
 
 docker-compose.yml
 ```yaml
-  cache:
-    image: ${CACHE_IMAGE}:${CACHE_TAG}
-    container_name: ${COMPOSE_PROJECT_NAME}_cache
+  redis:
+    image: ${REDIS_IMAGE}:${REDIS_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_redis
     volumes:
-      - ./data/cache:/data:delegated
+      - ./data/redis:/data:delegated
     ports:
-      - ${EXTERNAL_CACHE_PORT}:6379
+      - ${REDIS_PORT}:6379
     command: redis-server --appendonly yes
 
-  cache-stat:
-    image: ${CACHE_STAT_IMAGE}:${CACHE_STAT_TAG}
-    container_name: ${COMPOSE_PROJECT_NAME}_cachestat
+  redis-stat:
+    image: ${REDIS_STAT_IMAGE}:${REDIS_STAT_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_redisstat
     ports:
-      - ${EXTERNAL_CACHE_STAT_PORT}:63790
-    command: --server cache:6379
+      - ${REDIS_STAT_PORT}:63790
+    command: --server redis:6379
 ```
 
 ## Search Snippets
