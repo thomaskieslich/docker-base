@@ -35,7 +35,7 @@ services:
     volumes:
       - ./data/mysql/:/var/lib/mysql:delegated
     ports:
-      - ${EXTERNAL_MYSQL_PORT}:3306
+      - ${MYSQL_PORT}:3306
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
@@ -47,7 +47,7 @@ services:
     image: ${PHPMYADMIN_IMAGE}:${PHPMYADMIN_TAG}
     container_name: ${COMPOSE_PROJECT_NAME}_phpmyadmin
     ports:
-      - ${EXTERNAL_PHPMYADMIN_PORT}:80
+      - ${PHPMYADMIN_PORT}:80
     environment:
       - PMA_HOST=mysql
 
@@ -55,4 +55,4 @@ services:
     image: ${MAILHOG_IMAGE}:${MAILHOG_TAG}
     container_name: ${COMPOSE_PROJECT_NAME}_mailhog
     ports:
-      - ${EXTERNAL_MAILHOG_PORT}:8025
+      - ${MAILHOG_PORT}:8025
