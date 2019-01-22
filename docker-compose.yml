@@ -72,3 +72,21 @@ services:
     ports:
       - ${REDIS_STAT_PORT}:63790
     command: --server redis:6379
+
+  solr:
+    image: ${SOLR_IMAGE}:${SOLR_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_solr
+    volumes:
+      - ./conf/solr/configsets:/opt/solr/server/solr/configsets
+      - ./conf/solr/cores:/opt/solr/server/solr/cores
+      - ./conf/solr/solr.xml:/opt/solr/server/solr/solr.xml
+
+      - ./data/search:/opt/solr/server/solr/data/:delegated
+    ports:
+      - ${SOLR_PORT}:8983
+
+  tika:
+    image: ${TIKA_IMAGE}:${TIKA_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_tika
+    ports:
+      - ${TIKA_PORT}:9998
