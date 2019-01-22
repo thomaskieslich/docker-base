@@ -43,13 +43,89 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
+  mariadb:
+    image: ${MARIADB_IMAGE}:${MARIADB_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_mariadb
+    volumes:
+      - ./data/mariadb/:/var/lib/mysql:delegated
+    ports:
+      - ${MARIADB_PORT}:3306
+    environment:
+      MYSQL_DATABASE: ${MARIADB_DATABASE}
+      MYSQL_USER: ${MARIADB_USER}
+      MYSQL_PASSWORD: ${MARIADB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  postgres:
+    image: ${POSTGRES_IMAGE}:${POSTGRES_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_postgres
+    ports:
+      - ${POSTGRES_PORT}:5432
+    volumes:
+      - ./data/postgres/:/var/lib/postgresql/data/:delegated
+    environment:
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+  mongo:
+    image: ${MONGO_IMAGE}:${MONGO_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_mongo
+    ports:
+      - ${MONGO_PORT}:27017
+    volumes:
+      - ./data/mongo/:/data/db/:delegated
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+
   phpmyadmin:
     image: ${PHPMYADMIN_IMAGE}:${PHPMYADMIN_TAG}
     container_name: ${COMPOSE_PROJECT_NAME}_phpmyadmin
     ports:
       - ${PHPMYADMIN_PORT}:80
     environment:
-      - PMA_HOST=mysql
+      PMA_HOST: mysql
+
+  adminer:
+    image: ${ADMINER_IMAGE}:${ADMINER_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_adminer
+    ports:
+      - ${ADMINER_PORT}:8080
+    environment:
+      ADMINER_DEFAULT_SERVER: mysql
+
+  pgadmin:
+    image: ${PGADMIN_IMAGE}:${PGADMIN_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_pgadmin
+    ports:
+      - ${PGADMIN_PORT}:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: dev@test
+      PGADMIN_DEFAULT_PASSWORD: dev
+
+  mongoclient:
+    image: ${MONGOCLIENT_IMAGE}:${MONGOCLIENT_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_mongoclient
+    ports:
+      - ${MONGOCLIENT_PORT}:3000
+
+  redis:
+    image: ${REDIS_IMAGE}:${REDIS_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_redis
+    volumes:
+      - ./data/redis:/data:delegated
+    ports:
+      - ${REDIS_PORT}:6379
+    command: redis-server --appendonly yes
+
+  redis-stat:
+    image: ${REDIS_STAT_IMAGE}:${REDIS_STAT_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_redisstat
+    ports:
+      - ${REDIS_STAT_PORT}:63790
+    command: --server redis:6379
 
   mailhog:
     image: ${MAILHOG_IMAGE}:${MAILHOG_TAG}
