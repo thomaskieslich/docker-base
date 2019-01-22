@@ -56,3 +56,9 @@ crontab: ## make crontab readonly
 
 root: ## open a bash inside the app Container with User root
 	docker-compose exec --user root app /bin/bash
+
+#############################
+# typo3
+#############################
+t3cf: ## ./typo3cms cache:flush
+	docker-compose exec --user application app ./typo3cms cache:flush
