@@ -2,7 +2,7 @@
 .idea
 
 /app/*
-!/app/public/index.php
+!/app/public/.gitkeep
 !/app/composer.json
 
 /data/*
