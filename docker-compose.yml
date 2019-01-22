@@ -56,3 +56,19 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}_mailhog
     ports:
       - ${MAILHOG_PORT}:8025
+
+  redis:
+    image: ${REDIS_IMAGE}:${REDIS_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_redis
+    volumes:
+      - ./data/redis:/data:delegated
+    ports:
+      - ${REDIS_PORT}:6379
+    command: redis-server --appendonly yes
+
+  redis-stat:
+    image: ${REDIS_STAT_IMAGE}:${REDIS_STAT_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_redisstat
+    ports:
+      - ${REDIS_STAT_PORT}:63790
+    command: --server redis:6379
