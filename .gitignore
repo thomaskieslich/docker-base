@@ -2,8 +2,9 @@
 .idea
 
 /app/*
+!/app/public/
+/app/public/*
 !/app/public/.gitkeep
-!/app/composer.json
 
 /data/*
 
