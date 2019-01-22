@@ -22,7 +22,7 @@ after run ```make bash```.
 ###TYPO3
 ```
 composer create-project typo3/cms-base-distribution . ^9
-composer require typo3/cms-introduction:^3.0
+composer require typo3/cms-introduction:^4.0
 ```
 
 ### Symfony
