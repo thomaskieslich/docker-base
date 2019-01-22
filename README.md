@@ -41,7 +41,7 @@ composer create-project --no-dev neos/neos-base-distribution .
 
 ## Hints
 ### cron
-To run crontabs uncomment the Job in conf/cron/crontab (TYPO3 Scheduler) or add your own.
+To run crontabs change the Job in conf/cron/crontab (TYPO3 Scheduler) or add your own.
 If possible set you local crontab to read-only (0600) or try ```make crontab```.
 Then uncomment this Line in docker-compose.yml.
 ```yaml
@@ -83,50 +83,34 @@ openssl req \
 
 ## Database Snippets
 
-### Mysql / phpmyadmin
+### Mysql
 .env
 ```
-EXTERNAL_DB_PORT=3306
-EXTERNAL_DB_ADMIN_PORT=8080
+MYSQL_PORT=3306
+MYSQL_IMAGE=mysql
+MYSQL_TAG=5.7
 
-# db
-## mysql postgres mariadb
-DB_IMAGE=postgres
-DB_TAG=10
-
-DB_DATABASE=app_db
-DB_USER=dev
-DB_PASSWORD=dev
-DB_ROOT_PASSWORD=dev
-
-# phpmyadmin dpage/pgadmin4
-DB_ADMIN_IMAGE=phpmyadmin/phpmyadmin
-DB_ADMIN_TAG=4.8
+MYSQL_DATABASE=app_db
+MYSQL_USER=dev
+MYSQL_PASSWORD=dev
+MYSQL_ROOT_PASSWORD=dev
 ```
 
 docker-compose.yml
 ```yaml
-  db:
-    image: ${DB_IMAGE}:${DB_TAG}
-    container_name: ${COMPOSE_PROJECT_NAME}_db
-    volumes:
-      - ./data/db/:/var/lib/mysql:delegated
-    ports:
-      - ${EXTERNAL_DB_PORT}:3306
-    environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-
-  dbadmin:
-    image: ${DB_ADMIN_IMAGE}:${DB_ADMIN_TAG}
-    container_name: ${COMPOSE_PROJECT_NAME}_dbadmin
-    ports:
-      - ${EXTERNAL_DB_ADMIN_PORT}:80
-    environment:
-      - PMA_HOST=db
+  mysql:
+      image: ${DB_IMAGE}:${DB_TAG}
+      container_name: ${COMPOSE_PROJECT_NAME}_mysql
+      volumes:
+        - ./data/mysql/:/var/lib/mysql:delegated
+      ports:
+        - ${EXTERNAL_MYSQL_PORT}:3306
+      environment:
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 ```
 
 #### Backup/Restore Examples
@@ -152,135 +136,189 @@ gunzip < ./backup/app_db-###.sql.gz | docker-compose exec -T db mysql -udev -pde
 
 ```
 
-### mariadb / adminer
+### mariadb
+https://hub.docker.com/_/mariadb
+
+https://mariadb.org/
+
 .env
 ```
-EXTERNAL_DB_PORT=3306
-EXTERNAL_DB_ADMIN_PORT=8080
+MARIADB_PORT=13306
+MARIADB_IMAGE=mysql
+MARIADB_TAG=5.7
 
-# db
-## mysql postgres mariadb
-DB_IMAGE=mariadb
-DB_TAG=10
-
-DB_DATABASE=app_db
-DB_USER=dev
-DB_PASSWORD=dev
-DB_ROOT_PASSWORD=dev
-
-# phpmyadmin dpage/pgadmin4 adminer
-DB_ADMIN_IMAGE=adminer
-DB_ADMIN_TAG=4
+MARIADB_DATABASE=app_db
+MARIADB_USER=dev
+MARIADB_PASSWORD=dev
+MARIADB_ROOT_PASSWORD=dev
 ```
 
 docker-compose.yml
 ```yaml
-  db:
-    image: ${DB_IMAGE}:${DB_TAG}
-    container_name: ${COMPOSE_PROJECT_NAME}_db
+  mariadb:
+    image: ${MARIADB_IMAGE}:${MARIADB_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_mariadb
     volumes:
-      - ./data/db/:/var/lib/mysql:delegated
+      - ./data/mariadb/:/var/lib/mysql:delegated
     ports:
-      - ${EXTERNAL_DB_PORT}:3306
+      - ${MARIADB_PORT}:3306
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MARIADB_DATABASE}
+      MYSQL_USER: ${MARIADB_USER}
+      MYSQL_PASSWORD: ${MARIADB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-
-  dbadmin:
-    image: ${DB_ADMIN_IMAGE}:${DB_ADMIN_TAG}
-    container_name: ${COMPOSE_PROJECT_NAME}_dbadmin
-    ports:
-      - ${EXTERNAL_DB_ADMIN_PORT}:8080
 ```
 
-### postgres / pgadmin
+### postgres
+https://hub.docker.com/_/postgres
+
+https://www.postgresql.org/
 
 .env
 ```
-EXTERNAL_DB_PORT=5432
-EXTERNAL_DB_ADMIN_PORT=8080
+POSTGRES_PORT=5432
+POSTGRES_IMAGE=postgres
+POSTGRES_TAG=11
 
-# db
-## mysql postgres mariadb
-DB_IMAGE=postgres
-DB_TAG=10
-
-DB_DATABASE=app_db
-DB_USER=dev
-DB_PASSWORD=dev
-DB_ROOT_PASSWORD=dev
-
-# phpmyadmin dpage/pgadmin4
-DB_ADMIN_IMAGE=dpage/pgadmin4
-DB_ADMIN_TAG=3
+POSTGRES_DATABASE=app_db
+POSTGRES_USER=dev
+POSTGRES_PASSWORD=dev
+POSTGRES_ROOT_PASSWORD=dev
 ```
 
 docker-compose.yml
 ```yaml
-  db:
-    image: ${DB_IMAGE}:${DB_TAG}
-    container_name: ${COMPOSE_PROJECT_NAME}_db
-    environment:
-      POSTGRES_DB: ${DB_DATABASE}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+  postgres:
+    image: ${POSTGRES_IMAGE}:${POSTGRES_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_postgres
     ports:
-      - ${EXTERNAL_DB_PORT}:5432
+      - ${POSTGRES_PORT}:5432
     volumes:
-      - ./data/db/:/var/lib/postgresql/data/:delegated
-
-  dbadmin:
-    image: ${DB_ADMIN_IMAGE}:${DB_ADMIN_TAG}
-    container_name: ${COMPOSE_PROJECT_NAME}_dbadmin
-    ports:
-      - ${EXTERNAL_DB_ADMIN_PORT}:80
+      - ./data/postgres/:/var/lib/postgresql/data/:delegated
     environment:
-      PGADMIN_DEFAULT_EMAIL: dev@test
-      PGADMIN_DEFAULT_PASSWORD: dev
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
 ```
 
-### mongo / mongoclient
+### mongo
+https://hub.docker.com/_/mongo
+
+https://www.mongodb.com
 
 .env
 ```
-EXTERNAL_DB_PORT=27017
-EXTERNAL_DB_ADMIN_PORT=3000
+MONGO_PORT=27017
+MONGO_IMAGE=mongo
+MONGO_TAG=4
 
-# db
-## mysql postgres mariadb mongo
-DB_IMAGE=mongo
-DB_TAG=4
-
-DB_DATABASE=app_db
-DB_USER=dev
-DB_PASSWORD=dev
-DB_ROOT_PASSWORD=dev
-
-# phpmyadmin dpage/pgadmin4 mongoclient
-DB_ADMIN_IMAGE=mongoclient/mongoclient
-DB_ADMIN_TAG=2.2.0
+MONGO_ROOT_USER=dev
+MONGO_ROOT_PASSWORD=dev
 ```
 
 docker-compose.yml
 ```yaml
-  db:
-    image: ${DB_IMAGE}:${DB_TAG}
-    container_name: ${COMPOSE_PROJECT_NAME}_db
+  mongo:
+    image: ${MONGO_IMAGE}:${MONGO_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_mongo
     ports:
-      - ${EXTERNAL_DB_PORT}:27017
+      - ${MONGO_PORT}:27017
+    volumes:
+      - ./data/mongo/:/data/db/:delegated
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-
-  dbadmin:
-    image: ${DB_ADMIN_IMAGE}:${DB_ADMIN_TAG}
-    container_name: ${COMPOSE_PROJECT_NAME}_dbadmin
-    ports:
-      - ${EXTERNAL_DB_ADMIN_PORT}:3000
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
 ```
+
+##Datbase Admin Snippets
+
+### phpmyadmin
+.env
+```
+PHPMYADMIN_PORT=8080
+PHPMYADMIN_IMAGE=phpmyadmin/phpmyadmin
+PHPMYADMIN_TAG=4.8
+```
+
+docker-compose.yml
+```yaml
+  phpmyadmin:
+      image: ${PHPMYADMIN_IMAGE}:${PHPMYADMIN_TAG}
+      container_name: ${COMPOSE_PROJECT_NAME}_phpmyadmin
+      ports:
+        - ${PHPMYADMIN_PORT}:80
+      environment:
+        PMA_HOST: mysql
+```
+
+### Adminer
+https://www.adminer.org
+
+https://hub.docker.com/_/adminer
+
+.env
+```
+ADMINER_PORT=8090
+ADMINER_IMAGE=adminer
+ADMINER_TAG=4
+```
+
+docker-compose.yml
+```yaml
+  adminer:
+      image: ${ADMINER_IMAGE}:${ADMINER_TAG}
+      container_name: ${COMPOSE_PROJECT_NAME}_adminer
+      ports:
+        - ${ADMINER_PORT}:8080
+      environment:
+        ADMINER_DEFAULT_SERVER: mysql
+```
+
+### pgadmin
+https://hub.docker.com/r/dpage/pgadmin4
+
+https://www.pgadmin.org/
+
+.env
+```
+PGADMIN_PORT=8095
+PGADMIN_IMAGE=dpage/pgadmin4
+PGADMIN_TAG=4
+```
+
+docker-compose.yml
+```yaml
+  pgadmin:
+      image: ${PGADMIN_IMAGE}:${PGADMIN_TAG}
+      container_name: ${COMPOSE_PROJECT_NAME}_pgadmin
+      ports:
+        - ${PGADMIN_PORT}:80
+      environment:
+        - PGADMIN_DEFAULT_EMAIL: dev@test
+        - PGADMIN_DEFAULT_PASSWORD: dev
+```          
+          
+### mongoclient
+https://hub.docker.com/r/mongoclient/mongoclient
+
+https://www.nosqlclient.com/
+
+.env
+```
+MONGOCLIENT_PORT=3000
+MONGOCLIENT_IMAGE=mongoclient/mongoclient
+MONGOCLIENT_TAG=2.2.0
+```
+
+docker-compose.yml
+```yaml
+  mongoclient:
+      image: ${MONGOCLIENT_IMAGE}:${MONGOCLIENT_TAG}
+      container_name: ${COMPOSE_PROJECT_NAME}_mongoclient
+      ports:
+        - ${MONGOCLIENT_PORT}:3000
+```  
 
 ## Mail Snippets
 
@@ -310,36 +348,39 @@ docker-compose.yml
 
 ## Cache Snippets
 ### redis / redis-stats
+https://hub.docker.com/r/insready/redis-stat
+
+
 .env
 ```
-EXTERNAL_CACHE_PORT=6379
-EXTERNAL_CACHE_STAT_PORT=8081
+REDIS_PORT=6379
+REDIS_STAT_PORT=8081
 
-# cache
-CACHE_IMAGE=redis
-CACHE_TAG=4
+# redis
+REDIS_IMAGE=redis
+REDIS_TAG=4
 
-CACHE_STAT_IMAGE=insready/redis-stat
-CACHE_STAT_TAG=latest
+REDIS_STAT_IMAGE=insready/redis-stat
+REDIS_STAT_TAG=latest
 ```
 
 docker-compose.yml
 ```yaml
-  cache:
-    image: ${CACHE_IMAGE}:${CACHE_TAG}
-    container_name: ${COMPOSE_PROJECT_NAME}_cache
+  redis:
+    image: ${REDIS_IMAGE}:${REDIS_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_redis
     volumes:
-      - ./data/cache:/data:delegated
+      - ./data/redis:/data:delegated
     ports:
-      - ${EXTERNAL_CACHE_PORT}:6379
+      - ${REDIS_PORT}:6379
     command: redis-server --appendonly yes
 
-  cache-stat:
-    image: ${CACHE_STAT_IMAGE}:${CACHE_STAT_TAG}
-    container_name: ${COMPOSE_PROJECT_NAME}_cachestat
+  redis-stat:
+    image: ${REDIS_STAT_IMAGE}:${REDIS_STAT_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_redisstat
     ports:
-      - ${EXTERNAL_CACHE_STAT_PORT}:63790
-    command: --server cache:6379
+      - ${REDIS_STAT_PORT}:63790
+    command: --server redis:6379
 ```
 
 ## Search Snippets
