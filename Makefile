@@ -30,7 +30,7 @@ kill: ## Stop and remove all Containers
 	docker-compose stop
 	docker-compose rm --force
 
-state: ## show current state all Containers
+ps: ## show current state of Containers from this project
 	docker-compose ps
 
 #############################
