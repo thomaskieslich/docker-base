@@ -150,3 +150,23 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}_tika
     ports:
       - ${TIKA_PORT}:9998
+
+  elasticsearch:
+    image: ${ELASTICSEARCH_IMAGE}:${ELASTICSEARCH_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_elasticsearch
+    ports:
+      - ${ELASTICSEARCH_PORT_REST}:9200
+      - ${ELASTICSEARCH_PORT_NODES}:9300
+    volumes:
+      - ./data/elasticsearch/:/usr/share/elasticsearch/data/:delegated
+    environment:
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms750m -Xmx750m
+
+  kibana:
+    image: ${KIBANA_IMAGE}:${ELASTICSEARCH_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_kibana
+    ports:
+      - ${KIBANA_PORT}:5601
+    environment:
+      - xpack.security.enabled=false
