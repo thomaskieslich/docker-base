@@ -46,7 +46,7 @@ ci: ## run composer install inside the app Container
 cu: ## run composer update inside the app Container
 	docker-compose exec --user application app composer update
 
-cu: ## run composer dump -a inside the app Container
+cd: ## run composer dump -a inside the app Container
 	docker-compose exec --user application app composer dump -a
 
 crontab: ## make crontab readonly
