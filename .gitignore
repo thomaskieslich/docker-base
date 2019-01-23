@@ -2,7 +2,9 @@
 .idea
 
 /app/*
-!/app/public/index.php
+!/app/public/
+/app/public/*
+!/app/public/.gitkeep
 
 /data/*
 
