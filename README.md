@@ -382,9 +382,10 @@ docker-compose.yml
 ## Search Snippets
 
 ### solr / tika
-https://hub.docker.com/_/solr
-
-https://hub.docker.com/r/logicalspark/docker-tikaserver
+- https://hub.docker.com/_/solr
+- http://lucene.apache.org/solr/
+- https://hub.docker.com/r/logicalspark/docker-tikaserver
+- https://tika.apache.org/
 
 .env
 ```
@@ -409,29 +410,31 @@ docker-compose.yml
 
       - ./data/search:/opt/solr/server/solr/data/:delegated
     ports:
-      - ${EXTERNAL_SOLR_PORT}:8983
+      - ${SOLR_PORT}:8983
 
   tika:
     image: ${TIKA_IMAGE}:${TIKA_TAG}
     container_name: ${COMPOSE_PROJECT_NAME}_tika
     ports:
-      - ${EXTERNAL_TIKA_PORT}:9998
+      - ${TIKA_PORT}:9998
 ```
 
 
 
 ### elasticsesarch / kibana
+- https://www.docker.elastic.co/
+
 .env
 ```
-EXTERNAL_ELASTICSEARCH_PORT_REST=9200
-EXTERNAL_ELASTICSEARCH_PORT_NODES=9300
-EXTERNAL_KIBANA_PORT=5601
+ELASTICSEARCH_PORT_REST=9200
+ELASTICSEARCH_PORT_NODES=9300
+KIBANA_PORT=5601
 
-# search
 ELASTICSEARCH_IMAGE=docker.elastic.co/elasticsearch/elasticsearch
-ELASTICSEARCH_TAG=5.6.12
+ELASTICSEARCH_TAG=6.5.4
 
 KIBANA_IMAGE=docker.elastic.co/kibana/kibana
+KIBANA_TAG6.5.4
 ```
 
 docker-compose.yml
