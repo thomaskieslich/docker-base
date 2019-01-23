@@ -153,7 +153,7 @@ return [
         'features' => [
             'unifiedPageTranslationHandling' => true,
         ],
-        'sitename' => 'TYPO3 9.x Intro',
+        'sitename' => 'TYPO3 9.x Solr Cache',
         'systemLogLevel' => 0,
         'systemMaintainers' => [
             1,
