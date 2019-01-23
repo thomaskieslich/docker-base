@@ -325,9 +325,7 @@ docker-compose.yml
 ### mailhog
 .env
 ```
-EXTERNAL_MAIL_PORT=8025
-
-# mail
+MAIL_PORT=8025
 MAIL_IMAGE=mailhog/mailhog
 MAIL_TAG=v1.0.0
 ```
@@ -355,8 +353,6 @@ https://hub.docker.com/r/insready/redis-stat
 ```
 REDIS_PORT=6379
 REDIS_STAT_PORT=8081
-
-# redis
 REDIS_IMAGE=redis
 REDIS_TAG=4
 
@@ -386,17 +382,19 @@ docker-compose.yml
 ## Search Snippets
 
 ### solr / tika
+https://hub.docker.com/_/solr
+
+https://hub.docker.com/r/logicalspark/docker-tikaserver
+
 .env
 ```
-EXTERNAL_SOLR_PORT=8983
-EXTERNAL_TIKA_PORT=9998
-
-# search
+SOLR_PORT=8983
 SOLR_IMAGE=solr
-SOLR_TAG=6.6.3
+SOLR_TAG=7.5
 
+TIKA_PORT=9998
 TIKA_IMAGE=logicalspark/docker-tikaserver
-TIKA_TAG=1.18
+TIKA_TAG=1.20
 ```
 
 docker-compose.yml
@@ -419,6 +417,8 @@ docker-compose.yml
     ports:
       - ${EXTERNAL_TIKA_PORT}:9998
 ```
+
+
 
 ### elasticsesarch / kibana
 .env
