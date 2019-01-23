@@ -1,12 +1,15 @@
+.DS_Store
+.idea
+
 /app/*
-/backup/*
+!/app/public/
+/app/public/*
+!/app/public/.gitkeep
 
-/data/elasticsearch/*
-/data/mysql/*
-/data/phpmyadmin/*
-/data/postgres/*
-/data/redis/*
-/data/solr/*
+/data/*
 
-!.gitkeep
-!/app/public/index.php
+**/ssh/*
+!**/ssh/.gitkeep
+
+ssl/*
+!**/ssl/.gitkeep
