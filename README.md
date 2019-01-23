@@ -60,9 +60,11 @@ Then uncomment this Line in docker-compose.yml.
 Default ssl cert are for *.vm. If you need another cert then copy it to the
 conf Development/Production ssl Folder.
 Then uncomment this Line in docker-compose.yml.
+
 ```yaml
 - ./conf/${PROVISION_CONTEXT}/ssl:/opt/docker/etc/httpd/ssl/
 ```
+
 current certs are created with:
 ```bash
 openssl req \
@@ -84,6 +86,9 @@ openssl req \
 ## Database Snippets
 
 ### Mysql
+- https://hub.docker.com/_/mysql
+- https://www.mysql.com
+
 .env
 ```
 MYSQL_PORT=3306
@@ -137,9 +142,8 @@ gunzip < ./backup/app_db-###.sql.gz | docker-compose exec -T db mysql -udev -pde
 ```
 
 ### mariadb
-https://hub.docker.com/_/mariadb
-
-https://mariadb.org/
+- https://hub.docker.com/_/mariadb
+- https://mariadb.org/
 
 .env
 ```
@@ -171,9 +175,8 @@ docker-compose.yml
 ```
 
 ### postgres
-https://hub.docker.com/_/postgres
-
-https://www.postgresql.org/
+- https://hub.docker.com/_/postgres
+- https://www.postgresql.org/
 
 .env
 ```
@@ -203,9 +206,8 @@ docker-compose.yml
 ```
 
 ### mongo
-https://hub.docker.com/_/mongo
-
-https://www.mongodb.com
+- https://hub.docker.com/_/mongo
+- https://www.mongodb.com
 
 .env
 ```
@@ -234,6 +236,9 @@ docker-compose.yml
 ##Datbase Admin Snippets
 
 ### phpmyadmin
+- https://hub.docker.com/r/phpmyadmin/phpmyadmin
+- https://www.phpmyadmin.net/
+
 .env
 ```
 PHPMYADMIN_PORT=8080
@@ -253,9 +258,8 @@ docker-compose.yml
 ```
 
 ### Adminer
-https://www.adminer.org
-
-https://hub.docker.com/_/adminer
+- https://www.adminer.org
+- https://hub.docker.com/_/adminer
 
 .env
 ```
@@ -276,9 +280,8 @@ docker-compose.yml
 ```
 
 ### pgadmin
-https://hub.docker.com/r/dpage/pgadmin4
-
-https://www.pgadmin.org/
+- https://hub.docker.com/r/dpage/pgadmin4
+- https://www.pgadmin.org/
 
 .env
 ```
@@ -300,9 +303,8 @@ docker-compose.yml
 ```          
           
 ### mongoclient
-https://hub.docker.com/r/mongoclient/mongoclient
-
-https://www.nosqlclient.com/
+- https://hub.docker.com/r/mongoclient/mongoclient
+- https://www.nosqlclient.com/
 
 .env
 ```
@@ -323,31 +325,33 @@ docker-compose.yml
 ## Mail Snippets
 
 ### mailhog
+- https://hub.docker.com/r/mailhog/mailhog
+- https://github.com/mailhog
+
 .env
 ```
-MAIL_PORT=8025
-MAIL_IMAGE=mailhog/mailhog
-MAIL_TAG=v1.0.0
+MAILHOG_PORT=8025
+MAILHOG_IMAGE=mailhog/mailhog
+MAILHOG_TAG=v1.0.0
 ```
 
 docker-compose.yml
 ```yaml
-  mail:
-    image: ${MAIL_IMAGE}:${MAIL_TAG}
-    container_name: ${COMPOSE_PROJECT_NAME}_mail
+  mailhog:
+    image: ${MAILHOG_IMAGE}:${MAILHOG_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_mailhog
     ports:
-      - ${EXTERNAL_MAIL_PORT}:8025
+      - ${MAILHOG_PORT}:8025
 ```
 
-- TYPO3 Mail Settings
-'transport' => 'smtp'
-'transport_smtp_server' => 'mail:1025'
-
+TYPO3 Mail Settings  
+'transport' => 'smtp'  
+'transport_smtp_server' => 'mailhog:1025'
 
 ## Cache Snippets
 ### redis / redis-stats
-https://hub.docker.com/r/insready/redis-stat
-
+- https://hub.docker.com/r/insready/redis-stat
+- https://github.com/junegunn/redis-stat
 
 .env
 ```
@@ -419,10 +423,10 @@ docker-compose.yml
       - ${TIKA_PORT}:9998
 ```
 
-
-
 ### elasticsesarch / kibana
 - https://www.docker.elastic.co/
+- https://hub.docker.com/_/elasticsearch
+- https://hub.docker.com/_/kibana
 
 .env
 ```
@@ -430,10 +434,10 @@ ELASTICSEARCH_PORT_REST=9200
 ELASTICSEARCH_PORT_NODES=9300
 KIBANA_PORT=5601
 
-ELASTICSEARCH_IMAGE=docker.elastic.co/elasticsearch/elasticsearch
+ELASTICSEARCH_IMAGE=elasticsearch
 ELASTICSEARCH_TAG=6.5.4
 
-KIBANA_IMAGE=docker.elastic.co/kibana/kibana
+KIBANA_IMAGE=kibana
 KIBANA_TAG6.5.4
 ```
 
@@ -443,8 +447,8 @@ docker-compose.yml
     image: ${ELASTICSEARCH_IMAGE}:${ELASTICSEARCH_TAG}
     container_name: ${COMPOSE_PROJECT_NAME}_elasticsearch
     ports:
-      - ${EXTERNAL_ELASTICSEARCH_PORT_REST}:9200
-      - ${EXTERNAL_ELASTICSEARCH_PORT_NODES}:9300
+      - ${ELASTICSEARCH_PORT_REST}:9200
+      - ${ELASTICSEARCH_PORT_NODES}:9300
     volumes:
       - ./data/elasticsearch/:/usr/share/elasticsearch/data/:delegated
     environment:
@@ -455,7 +459,7 @@ docker-compose.yml
     image: ${KIBANA_IMAGE}:${ELASTICSEARCH_TAG}
     container_name: ${COMPOSE_PROJECT_NAME}_kibana
     ports:
-      - ${EXTERNAL_KIBANA_PORT}:5601
+      - ${KIBANA_PORT}:5601
     environment:
       - xpack.security.enabled=false
 ```
