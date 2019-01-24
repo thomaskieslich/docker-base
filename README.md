@@ -30,6 +30,8 @@ composer require typo3/cms-introduction:^4.0
 composer create-project symfony/skeleton .
 composer create-project symfony/website-skeleton .
 composer create-project symfony/symfony-demo .
+
+composer require apache-pack
 ```
 
 ### Neos
