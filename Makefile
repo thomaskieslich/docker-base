@@ -12,9 +12,8 @@ build: ## Build Docker Containers for the first Time
 	docker-compose up -d
 
 rebuild: ## Stop, remove and rebuild all Containers
-	docker-compose stop
+	docker-compose down
 	docker-compose pull --ignore-pull-failures
-	docker-compose rm --force
 	docker-compose build --no-cache --pull
 	docker-compose up -d --force-recreate --remove-orphans
 
