@@ -66,3 +66,9 @@ crontab: ## make crontab readonly
 	docker-compose exec --user root app /bin/bash -c "chmod 0600 /var/spool/cron/crontabs/application"
 	docker-compose stop
 	docker-compose start
+
+#############################
+# TYPO3
+#############################
+t3cf: ## ./typo3cms cache:flush
+	docker-compose exec --user application app ./typo3cms cache:flush
