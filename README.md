@@ -12,7 +12,7 @@ make start
 make stop
 ```
 
-All Commands with only ```make```.
+List of all Commands with ```make``` only.
 
 ## Create Projects
 Go to public directory, delete all files and run the commands from 
@@ -440,7 +440,7 @@ ELASTICSEARCH_IMAGE=elasticsearch
 ELASTICSEARCH_TAG=6.5.4
 
 KIBANA_IMAGE=kibana
-KIBANA_TAG6.5.4
+KIBANA_TAG=6.5.4
 ```
 
 docker-compose.yml
