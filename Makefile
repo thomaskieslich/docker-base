@@ -10,12 +10,14 @@ help:
 #############################
 build: ## Build Docker Containers for the first Time
 	docker-compose up -d
+	docker-compose exec --user root app chown -R application:application /app
 
 rebuild: ## Stop, remove and rebuild all Containers
 	docker-compose down
 	docker-compose pull --ignore-pull-failures
 	docker-compose build --no-cache --pull
 	docker-compose up -d --force-recreate --remove-orphans
+	docker-compose exec --user root app chown -R application:application /app
 
 start: ## start Containers
 	docker-compose start
