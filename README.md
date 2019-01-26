@@ -12,7 +12,7 @@ make start
 make stop
 ```
 
-All Commands with only ```make```.
+List of all Commands with ```make``` only.
 
 ## Create Projects
 Go to public directory, delete all files and run the commands from 
