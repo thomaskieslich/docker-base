@@ -9,6 +9,7 @@ services:
       - ./app:/app:cached
       # exclude temp directories
       - /app/var/
+      - /app/public/fileadmin/_processed_
       - /app/public/typo3temp/
       # mount composer cache
       - ~/.composer/cache:/home/application/.composer/cache
