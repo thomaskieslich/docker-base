@@ -11,11 +11,9 @@
 		}
 	},
 	"require": {
-		"helhum/typo3-console": "^5.5.5",
+		"helhum/typo3-console": "^5.6",
 		"typo3/cms-introduction": "^4.0",
-		"apache-solr-for-typo3/solr": "dev-master as 9.0.0",
-		"georgringer/news": "^7.0",
-		"friendsoftypo3/tt-address": "^4.0",
+		"apache-solr-for-typo3/solr": "^9.0",
 
 		"typo3/cms-about": "^9.5",
 		"typo3/cms-backend": "^9.5",
