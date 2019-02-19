@@ -22,7 +22,7 @@ services:
       # replace ssl certs
       #- ./conf/${PROVISION_CONTEXT}/ssl:/opt/docker/etc/httpd/ssl/
       # add crontab (run make crontab after rebuild)
-      #- ./conf/cron/crontab:/var/spool/cron/crontabs/application
+      - ./conf/cron/crontab:/var/spool/cron/crontabs/application
     ports:
       - ${HTTP_PORT}:80
       - ${HTTPS_PORT}:443
