@@ -31,6 +31,11 @@ restart: ## restart Containers
 	docker-compose restart
 rs: restart
 
+reload: ## reload Containers with up -d
+	docker-compose kill
+	docker-compose up -d
+rl: reload
+
 kill: ## Stop and remove containers, networks, images, and volumes
 	docker-compose down
 rm: kill
