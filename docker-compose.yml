@@ -30,6 +30,8 @@ services:
       BLACKFIRE_SERVER_ID: ${BLACKFIRE_SERVER_ID}
       BLACKFIRE_SERVER_TOKEN: ${BLACKFIRE_SERVER_TOKEN}
       TYPO3_CONTEXT: ${PROVISION_CONTEXT}
+    depends_on:
+      - mysql
 
   mysql:
     image: ${MYSQL_IMAGE}:${MYSQL_TAG}
@@ -52,9 +54,13 @@ services:
       - ${PHPMYADMIN_PORT}:80
     environment:
       - PMA_HOST=mysql
+    depends_on:
+      - mysql
 
   mailhog:
     image: ${MAILHOG_IMAGE}:${MAILHOG_TAG}
     container_name: ${COMPOSE_PROJECT_NAME}_mailhog
     ports:
       - ${MAILHOG_PORT}:8025
+    depends_on:
+      - app
