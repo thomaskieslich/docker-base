@@ -13,7 +13,7 @@ build: ## Build Docker Containers for the first Time
 	docker-compose exec --user root app chown -R application:application /app
 
 rebuild: ## Stop, remove and rebuild all Containers
-	docker-compose down
+	docker-compose kill
 	docker-compose pull --ignore-pull-failures
 	docker-compose build --no-cache --pull
 	docker-compose up -d --force-recreate --remove-orphans
@@ -30,6 +30,11 @@ down: stop
 restart: ## restart Containers
 	docker-compose restart
 rs: restart
+
+reload: ## reload Containers with up -d
+	docker-compose kill
+	docker-compose up -d
+rl: reload
 
 kill: ## Stop and remove containers, networks, images, and volumes
 	docker-compose down
