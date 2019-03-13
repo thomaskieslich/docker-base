@@ -12,5 +12,5 @@
 **/ssh/*
 !**/ssh/.gitkeep
 
-ssl/*
+**/ssl/*
 !**/ssl/.gitkeep
