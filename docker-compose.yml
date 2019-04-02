@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 
 services:
   app:
@@ -36,6 +36,15 @@ services:
       TYPO3_CONTEXT: ${PROVISION_CONTEXT}
     depends_on:
       - mysql
+
+  node:
+    image: ${NODE_IMAGE}:${NODE_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}_node
+    user: node
+    working_dir: /app
+    volumes:
+      - ${NODE_SRC}:/app/src
+      - ${NODE_DIST}:/app/dist
 
   mysql:
     image: ${MYSQL_IMAGE}:${MYSQL_TAG}
