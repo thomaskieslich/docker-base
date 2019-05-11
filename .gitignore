@@ -1,15 +1,11 @@
 .DS_Store
 .idea
 
-/app/*
-!/app/public/
-/app/public/*
-!/app/public/.gitkeep
-
+app/
 /data/*
 
 **/ssh/*
 !**/ssh/.gitkeep
 
-ssl/*
+**/ssl/*
 !**/ssl/.gitkeep
