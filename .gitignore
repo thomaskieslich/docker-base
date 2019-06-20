@@ -1,12 +1,8 @@
 .DS_Store
 .idea
 
-/app/*
-!/app/composer.json
-!/app/public/
-/app/public/*
-!/app/public/.gitkeep
-
+app/
+/backup/*
 /data/*
 
 **/ssh/*
