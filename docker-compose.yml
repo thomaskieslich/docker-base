@@ -26,7 +26,7 @@ services:
       # reenable cache mox_expire
       - ./conf/${PROVISION_CONTEXT}/02-dev.conf:/opt/docker/etc/httpd/vhost.common.d/02-dev.conf
       # add http2 settings
-#      - ./conf/${PROVISION_CONTEXT}/http2.conf:/opt/docker/etc/httpd/vhost.common.d/03-http2.conf
+      - ./conf/${PROVISION_CONTEXT}/http2.conf:/opt/docker/etc/httpd/vhost.common.d/03-http2.conf
       # add php settings
       - ./conf/${PROVISION_CONTEXT}/php.ini:/usr/local/etc/php/conf.d/991-custom.ini
       # add php xdebug profile paths
@@ -49,8 +49,8 @@ services:
       BLACKFIRE_SERVER_ID: ${BLACKFIRE_SERVER_ID}
       BLACKFIRE_SERVER_TOKEN: ${BLACKFIRE_SERVER_TOKEN}
       TYPO3_CONTEXT: ${PROVISION_CONTEXT}
-#    command:
-#      sh -c 'a2enmod http2 && supervisord'
+    command:
+      sh -c 'a2enmod http2 && supervisord'
     depends_on:
       - mysql
 
