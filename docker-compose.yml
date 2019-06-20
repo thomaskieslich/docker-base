@@ -1,5 +1,13 @@
 version: '3.7'
 
+volumes:
+  processed:
+  typo3temp:
+  var:
+  vendor:
+  typo3:
+  mysql:
+
 services:
   app:
     image: ${APP_IMAGE}:${APP_TAG}
@@ -7,12 +15,18 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}_app
     volumes:
       - ./app:/app:cached
-      # exclude temp directories
-      - /app/var/
-      - /app/public/fileadmin/_processed_
-      - /app/public/typo3temp/
+      # move directories to volumes
+      - processed:/app/public/fileadmin/_processed_
+      - typo3temp:/app/public/typo3temp
+      - var:/app/var
+      - vendor:/app/vendor
+      - typo3:/app/public/typo3
       # mount composer cache
       - ~/.composer/cache:/home/application/.composer/cache
+      # reenable cache mox_expire
+      - ./conf/${PROVISION_CONTEXT}/02-dev.conf:/opt/docker/etc/httpd/vhost.common.d/02-dev.conf
+      # add http2 settings
+#      - ./conf/${PROVISION_CONTEXT}/http2.conf:/opt/docker/etc/httpd/vhost.common.d/03-http2.conf
       # add php settings
       - ./conf/${PROVISION_CONTEXT}/php.ini:/usr/local/etc/php/conf.d/991-custom.ini
       # add php xdebug profile paths
@@ -31,9 +45,12 @@ services:
       WEB_DOCUMENT_INDEX: ${WEB_DOCUMENT_INDEX}
       WEB_PHP_TIMEOUT: ${WEB_PHP_TIMEOUT}
       PHP_DEBUGGER: ${PHP_DEBUGGER}
+      PHP_DISMOD: ioncube,redis
       BLACKFIRE_SERVER_ID: ${BLACKFIRE_SERVER_ID}
       BLACKFIRE_SERVER_TOKEN: ${BLACKFIRE_SERVER_TOKEN}
       TYPO3_CONTEXT: ${PROVISION_CONTEXT}
+#    command:
+#      sh -c 'a2enmod http2 && supervisord'
     depends_on:
       - mysql
 
@@ -50,7 +67,8 @@ services:
     image: ${MYSQL_IMAGE}:${MYSQL_TAG}
     container_name: ${COMPOSE_PROJECT_NAME}_mysql
     volumes:
-      - ./data/mysql/:/var/lib/mysql:delegated
+      - mysql:/var/lib/mysql
+#      - ./data/mysql/:/var/lib/mysql:delegated
     ports:
       - ${MYSQL_PORT}:3306
     environment:
@@ -77,3 +95,4 @@ services:
       - ${MAILHOG_PORT}:8025
     depends_on:
       - app
+
