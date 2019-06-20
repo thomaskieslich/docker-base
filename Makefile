@@ -10,7 +10,6 @@ help:
 build: ## Build Docker Containers for the first Time
 	docker-compose up -d
 	docker-compose exec --user root app chown -R application:application /app
-	docker-compose run --user root node chown -R node:node /app
 
 rebuild: ## Stop, remove and rebuild all Containers
 	docker-compose down
@@ -18,7 +17,6 @@ rebuild: ## Stop, remove and rebuild all Containers
 	docker-compose build --no-cache --pull
 	docker-compose up -d --force-recreate --remove-orphans
 	docker-compose exec --user root app chown -R application:application /app
-	docker-compose run --user root node chown -R node:node /app
 
 start: ## start Containers
 	docker-compose start
@@ -78,33 +76,53 @@ crontab: ## make crontab readonly
 # TYPO3
 #############################
 t3cf: ## ./typo3cms cache:flush
-	docker-compose exec --user application app /bin/bash -c "TYPO3_CONTEXT=Development/Local ./typo3cms cache:flush"
+	docker-compose exec --user application app /bin/bash -c "./typo3cms cache:flush"
+
+t3refupd: ## ./typo3cms cache:flush
+	docker-compose exec --user application app /bin/bash -c "./typo3cms cleanup:updatereferenceindex"
+
+#############################
+# BACKUP
+#############################
+backup-mysql: ## backup TYPO3 DB
+	docker-compose exec -T mysql mysqldump --single-transaction --quick --lock-tables=false -u dev -pdev app_db | gzip >  ./backup/app_db.sql.gz
+
+backup-files: ## backup fileadmin
+	docker-compose exec --user application app /bin/bash -c "tar -czvf fileadmin.tar.gz public/fileadmin"
+	mv ./app/fileadmin.tar.gz ./backup/fileadmin.tar.gz
+
+restore-mysql: ## restore TYPO3 DB
+	gunzip < ./backup/app_db.sql.gz | docker-compose exec -T mysql mysql -udev -pdev app_db
+
+restore-files: ## restore fileadmin
+	cp ./backup/fileadmin.tar.gz ./app/fileadmin.tar.gz
+	docker-compose exec --user application app /bin/bash -c "tar -xzvf fileadmin.tar.gz"
+	rm ./app/fileadmin.tar.gz
 
 #############################
 # node
 #############################
 
 node: ## open a bash inside the app Container with User application
-	docker-compose run --user node node /bin/bash
+	docker-compose run -u node --rm node /bin/bash
 
 npm-install: ## run npm install in src folder
-	docker-compose run --user root node chown -R node:node /app
-	docker-compose run --user node node /bin/bash -c "cd src && npm install"
+	docker-compose run -u node --rm node /bin/bash -c "cd src && npm install"
 
 npm-rbsass: ## rebuild node saas
-	docker-compose run --user node node /bin/bash -c "cd src && npm rebuild node-sass"
+	docker-compose run -u node --rm node /bin/bash -c "cd src && npm rebuild node-sass"
 
 npm-watch: ## run npm watch in src folder
-	docker-compose run --user node node /bin/bash -c "cd src && npm run watch"
+	docker-compose run -u node --rm node /bin/bash -c "cd src && npm run watch"
 
 npm-build: ## complete build
-	docker-compose run --user node node /bin/bash -c "cd src && npm run build"
+	docker-compose run -u node --rm node /bin/bash -c "cd src && npm run build"
 
 npm-prod: ## complete build for production
-	docker-compose run --user node node /bin/bash -c "cd src && npm run buildProd"
+	docker-compose run -u node --rm node /bin/bash -c "cd src && npm run buildProd"
 
 npm-sl: ## run stylelint to stylelint-report.txt with
-	docker-compose run --user node node /bin/bash -c "cd src && npm run lint:scss"
+	docker-compose run -u node --rm node /bin/bash -c "cd src && npm run lint:scss"
 
 npm-slf: ## run stylelint to stylelint-report.txt with --fix
-	docker-compose run --user node node /bin/bash -c "cd src && npm run lint:scss-fix"
+	docker-compose run -u node --rm node /bin/bash -c "cd src && npm run lint:scss-fix"
