@@ -6,6 +6,7 @@ volumes:
   var:
   vendor:
   typo3:
+  ext:
   mysql:
 
 services:
@@ -21,12 +22,11 @@ services:
       - var:/app/var
       - vendor:/app/vendor
       - typo3:/app/public/typo3
+      - ext:/app/public/typo3conf/ext
       # mount composer cache
       - ~/.composer/cache:/home/application/.composer/cache
       # reenable cache mox_expire
       - ./conf/${PROVISION_CONTEXT}/02-dev.conf:/opt/docker/etc/httpd/vhost.common.d/02-dev.conf
-      # add http2 settings
-      - ./conf/${PROVISION_CONTEXT}/http2.conf:/opt/docker/etc/httpd/vhost.common.d/03-http2.conf
       # add php settings
       - ./conf/${PROVISION_CONTEXT}/php.ini:/usr/local/etc/php/conf.d/991-custom.ini
       # add php xdebug profile paths
@@ -49,19 +49,19 @@ services:
       BLACKFIRE_SERVER_ID: ${BLACKFIRE_SERVER_ID}
       BLACKFIRE_SERVER_TOKEN: ${BLACKFIRE_SERVER_TOKEN}
       TYPO3_CONTEXT: ${PROVISION_CONTEXT}
-    command:
-      sh -c 'a2enmod http2 && supervisord'
+#    command:
+#      sh -c 'a2enmod http2 && supervisord'
     depends_on:
       - mysql
 
-  node:
-    image: ${NODE_IMAGE}:${NODE_TAG}
-    container_name: ${COMPOSE_PROJECT_NAME}_node
-    user: node
-    working_dir: /app
-    volumes:
-      - ${NODE_SRC}:/app/src
-      - ${NODE_DIST}:/app/dist
+#  node:
+#    image: ${NODE_IMAGE}:${NODE_TAG}
+#    container_name: ${COMPOSE_PROJECT_NAME}_node
+#    user: node
+#    working_dir: /app
+#    volumes:
+#      - ${NODE_SRC}:/app/src
+#      - ${NODE_DIST}:/app/dist
 
   mysql:
     image: ${MYSQL_IMAGE}:${MYSQL_TAG}
