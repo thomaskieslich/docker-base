@@ -26,15 +26,13 @@ services:
       # mount composer cache
       - ~/.composer/cache:/home/application/.composer/cache
       # reenable cache mox_expire
-      - ./conf/${PROVISION_CONTEXT}/02-dev.conf:/opt/docker/etc/httpd/vhost.common.d/02-dev.conf
-      # add php settings
-      - ./conf/${PROVISION_CONTEXT}/php.ini:/usr/local/etc/php/conf.d/991-custom.ini
+#      - ./conf/${PROVISION_CONTEXT}/02-dev.conf:/opt/docker/etc/httpd/vhost.common.d/02-dev.conf
       # add php xdebug profile paths
       - ./data/php-profiles/:/tmp/debug/:delegated
       # add ssh key for repository access
-      #- ./conf/${PROVISION_CONTEXT}/ssh:/home/application/.ssh
+      - ./conf/ssh:/home/application/.ssh
       # replace ssl certs
-      - ./conf/${PROVISION_CONTEXT}/ssl:/opt/docker/etc/httpd/ssl/
+      - ./conf/ssl:/opt/docker/etc/httpd/ssl/
       # add crontab (run make crontab after rebuild)
       - ./conf/cron/crontab:/var/spool/cron/crontabs/application
     ports:
@@ -44,13 +42,20 @@ services:
       WEB_DOCUMENT_ROOT: ${WEB_DOCUMENT_ROOT}
       WEB_DOCUMENT_INDEX: ${WEB_DOCUMENT_INDEX}
       WEB_PHP_TIMEOUT: ${WEB_PHP_TIMEOUT}
+
       PHP_DEBUGGER: ${PHP_DEBUGGER}
+
       PHP_DISMOD: ioncube,redis
+      PHP_DATE_TIMEZONE: ${PHP_DATE_TIMEZONE}
+      PHP_DISPLAY_ERRORS: ${PHP_DISPLAY_ERRORS}
+      XDEBUG_REMOTE_HOST: ${XDEBUG_REMOTE_HOST}
+      XDEBUG_REMOTE_CONNECT_BACK: ${XDEBUG_REMOTE_CONNECT_BACK}
+      XDEBUG_IDEKEY: ${XDEBUG_IDEKEY}
+
       BLACKFIRE_SERVER_ID: ${BLACKFIRE_SERVER_ID}
       BLACKFIRE_SERVER_TOKEN: ${BLACKFIRE_SERVER_TOKEN}
+
       TYPO3_CONTEXT: ${PROVISION_CONTEXT}
-#    command:
-#      sh -c 'a2enmod http2 && supervisord'
     depends_on:
       - mysql
 
