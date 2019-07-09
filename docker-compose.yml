@@ -13,7 +13,7 @@ services:
   app:
     image: ${APP_IMAGE}:${APP_TAG}
     working_dir: /app
-    container_name: ${COMPOSE_PROJECT_NAME}_app
+    container_name: ${PROJECT_ID}_app
     volumes:
       - ./app:/app:cached
       # move directories to volumes
@@ -61,7 +61,7 @@ services:
 
 #  node:
 #    image: ${NODE_IMAGE}:${NODE_TAG}
-#    container_name: ${COMPOSE_PROJECT_NAME}_node
+#    container_name: ${PROJECT_ID}_node
 #    user: node
 #    working_dir: /app
 #    volumes:
@@ -70,7 +70,7 @@ services:
 
   mysql:
     image: ${MYSQL_IMAGE}:${MYSQL_TAG}
-    container_name: ${COMPOSE_PROJECT_NAME}_mysql
+    container_name: ${PROJECT_ID}_mysql
     volumes:
       - mysql:/var/lib/mysql
 #      - ./data/mysql/:/var/lib/mysql:delegated
@@ -85,7 +85,7 @@ services:
 
   phpmyadmin:
     image: ${PHPMYADMIN_IMAGE}:${PHPMYADMIN_TAG}
-    container_name: ${COMPOSE_PROJECT_NAME}_phpmyadmin
+    container_name: ${PROJECT_ID}_phpmyadmin
     ports:
       - ${PHPMYADMIN_PORT}:80
     environment:
@@ -95,7 +95,7 @@ services:
 
   mailhog:
     image: ${MAILHOG_IMAGE}:${MAILHOG_TAG}
-    container_name: ${COMPOSE_PROJECT_NAME}_mailhog
+    container_name: ${PROJECT_ID}_mailhog
     ports:
       - ${MAILHOG_PORT}:8025
     depends_on:
