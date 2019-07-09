@@ -2,7 +2,7 @@
 .DEFAULT_GOAL := help
 
 help:
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-10s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-10s\033[0m %s\n", $$1, $$2}'
 
 #############################
 # Docker container states
@@ -72,14 +72,17 @@ crontab: ## make crontab readonly
 	docker-compose exec --user root app /bin/bash -c "chmod 0600 /var/spool/cron/crontabs/application"
 	docker-compose restart
 
+http2: ## enable http2 in apache
+	docker-compose exec --user root app /bin/bash -c "a2enmod http2 && service apache2 restart"
+
 #############################
 # TYPO3
 #############################
 t3cf: ## ./typo3cms cache:flush
-	docker-compose exec --user application app /bin/bash -c "./typo3cms cache:flush"
+	docker-compose exec --user application app /bin/bash -c "TYPO3_CONTEXT=Development/Local ./typo3cms cache:flush"
 
 t3refupd: ## ./typo3cms cache:flush
-	docker-compose exec --user application app /bin/bash -c "./typo3cms cleanup:updatereferenceindex"
+	docker-compose exec --user application app /bin/bash -c "TYPO3_CONTEXT=Development/Local ./typo3cms cleanup:updatereferenceindex"
 
 #############################
 # BACKUP
@@ -87,14 +90,14 @@ t3refupd: ## ./typo3cms cache:flush
 backup-mysql: ## backup TYPO3 DB
 	docker-compose exec -T mysql mysqldump --single-transaction --quick --lock-tables=false -u dev -pdev app_db | gzip >  ./backup/app_db.sql.gz
 
-backup-files: ## backup fileadmin
+backup-fileadmin: ## backup fileadmin
 	docker-compose exec --user application app /bin/bash -c "tar -czvf fileadmin.tar.gz public/fileadmin"
 	mv ./app/fileadmin.tar.gz ./backup/fileadmin.tar.gz
 
 restore-mysql: ## restore TYPO3 DB
 	gunzip < ./backup/app_db.sql.gz | docker-compose exec -T mysql mysql -udev -pdev app_db
 
-restore-files: ## restore fileadmin
+restore-fileadmin: ## restore fileadmin
 	cp ./backup/fileadmin.tar.gz ./app/fileadmin.tar.gz
 	docker-compose exec --user application app /bin/bash -c "tar -xzvf fileadmin.tar.gz"
 	rm ./app/fileadmin.tar.gz
