@@ -25,8 +25,10 @@ services:
       - ext:/app/public/typo3conf/ext
       # mount composer cache
       - ~/.composer/cache:/home/application/.composer/cache
+      # add http2 settings
+      - ./conf/apache/http2.conf:/opt/docker/etc/httpd/vhost.common.d/03-http2.conf
       # reenable cache mox_expire
-#      - ./conf/${PROVISION_CONTEXT}/02-dev.conf:/opt/docker/etc/httpd/vhost.common.d/02-dev.conf
+      - ./conf/apache/02-dev.conf:/opt/docker/etc/httpd/vhost.common.d/02-dev.conf
       # add php xdebug profile paths
       - ./data/php-profiles/:/tmp/debug/:delegated
       # add ssh key for repository access
@@ -72,8 +74,8 @@ services:
     image: ${MYSQL_IMAGE}:${MYSQL_TAG}
     container_name: ${PROJECT_ID}_mysql
     volumes:
-      - mysql:/var/lib/mysql
-#      - ./data/mysql/:/var/lib/mysql:delegated
+#      - mysql:/var/lib/mysql
+      - ./data/mysql/:/var/lib/mysql:delegated
     ports:
       - ${MYSQL_PORT}:3306
     environment:
