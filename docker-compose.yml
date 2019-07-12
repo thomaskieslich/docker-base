@@ -7,7 +7,7 @@ volumes:
   vendor:
   typo3:
   ext:
-  mysql:
+#  mysql:
 
 services:
   app:
@@ -45,11 +45,11 @@ services:
       WEB_DOCUMENT_INDEX: ${WEB_DOCUMENT_INDEX}
       WEB_PHP_TIMEOUT: ${WEB_PHP_TIMEOUT}
 
-      PHP_DEBUGGER: ${PHP_DEBUGGER}
-
       PHP_DISMOD: ioncube,redis
       PHP_DATE_TIMEZONE: ${PHP_DATE_TIMEZONE}
       PHP_DISPLAY_ERRORS: ${PHP_DISPLAY_ERRORS}
+
+      PHP_DEBUGGER: ${PHP_DEBUGGER}
       XDEBUG_REMOTE_HOST: ${XDEBUG_REMOTE_HOST}
       XDEBUG_REMOTE_CONNECT_BACK: ${XDEBUG_REMOTE_CONNECT_BACK}
       XDEBUG_IDEKEY: ${XDEBUG_IDEKEY}
@@ -61,21 +61,21 @@ services:
     depends_on:
       - mysql
 
-#  node:
-#    image: ${NODE_IMAGE}:${NODE_TAG}
-#    container_name: ${PROJECT_ID}_node
-#    user: node
-#    working_dir: /app
-#    volumes:
-#      - ${NODE_SRC}:/app/src
-#      - ${NODE_DIST}:/app/dist
+  node:
+    image: ${NODE_IMAGE}:${NODE_TAG}
+    container_name: ${PROJECT_ID}_node
+    user: node
+    working_dir: /app
+    volumes:
+      - ${NODE_SRC}:/app/src
+      - ${NODE_DIST}:/app/dist
 
   mysql:
     image: ${MYSQL_IMAGE}:${MYSQL_TAG}
     container_name: ${PROJECT_ID}_mysql
     volumes:
-#      - mysql:/var/lib/mysql
       - ./data/mysql/:/var/lib/mysql:delegated
+    #      - mysql/:/var/lib/mysql
     ports:
       - ${MYSQL_PORT}:3306
     environment:
@@ -102,4 +102,3 @@ services:
       - ${MAILHOG_PORT}:8025
     depends_on:
       - app
-

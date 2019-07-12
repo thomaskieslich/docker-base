@@ -46,7 +46,6 @@ ps: state
 #############################
 # bash
 #############################
-
 bash: ## open a bash inside the app Container with User application
 	docker-compose exec --user application app /bin/bash
 
@@ -55,18 +54,23 @@ root: ## open a bash inside the app Container with User root
 
 ci: ## run composer install inside the app Container
 	docker-compose exec --user application app composer install
+	cd app && composer update && cd ..
 
 cind: ## run composer install inside the app Container no-dev
 	docker-compose exec --user application app composer install
+	cd app && composer update && cd ..
 
 cu: ## run composer update inside the app Container
 	docker-compose exec --user application app composer update
+	cd app && composer update && cd ..
 
 cund: ## run composer update inside the app Container no-dev
 	docker-compose exec --user application app composer update --no-dev
+	cd app && composer update && cd ..
 
 cd: ## run composer dump -a inside the app Container
 	docker-compose exec --user application app composer dump -a
+	cd app && composer update && cd ..
 
 crontab: ## make crontab readonly
 	docker-compose exec --user root app /bin/bash -c "chmod 0600 /var/spool/cron/crontabs/application"
@@ -84,18 +88,21 @@ t3cf: ## ./typo3cms cache:flush
 t3refupd: ## ./typo3cms cache:flush
 	docker-compose exec --user application app /bin/bash -c "TYPO3_CONTEXT=Development/Local ./typo3cms cleanup:updatereferenceindex"
 
+#t3geo:
+#	docker-compose exec --user application app /bin/bash -c "PHP_IDE_CONFIG=serverName=frosta9x-de.l.test XDEBUG_CONFIG=idekey=PHPSTORM TYPO3_CONTEXT=Development/Local ./typo3cms importstores:geocode"
+
 #############################
 # BACKUP
 #############################
 backup-mysql: ## backup TYPO3 DB
 	docker-compose exec -T mysql mysqldump --single-transaction --quick --lock-tables=false -u dev -pdev app_db | gzip >  ./backup/app_db.sql.gz
 
+restore-mysql: ## restore TYPO3 DB
+	gunzip < ./backup/app_db.sql.gz | docker-compose exec -T mysql mysql -udev -pdev app_db
+
 backup-fileadmin: ## backup fileadmin
 	docker-compose exec --user application app /bin/bash -c "tar -czvf fileadmin.tar.gz public/fileadmin"
 	mv ./app/fileadmin.tar.gz ./backup/fileadmin.tar.gz
-
-restore-mysql: ## restore TYPO3 DB
-	gunzip < ./backup/app_db.sql.gz | docker-compose exec -T mysql mysql -udev -pdev app_db
 
 restore-fileadmin: ## restore fileadmin
 	cp ./backup/fileadmin.tar.gz ./app/fileadmin.tar.gz
@@ -105,7 +112,6 @@ restore-fileadmin: ## restore fileadmin
 #############################
 # node
 #############################
-
 node: ## open a bash inside the app Container with User application
 	docker-compose run -u node --rm node /bin/bash
 

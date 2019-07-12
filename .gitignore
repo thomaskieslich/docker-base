@@ -2,11 +2,14 @@
 .idea
 
 app/
+
 /backup/*
+!/backup/app_db.sql.gz
+!/backup/fileadmin.tar.gz
+
 /data/*
 
 **/ssh/*
-!**/ssh/.gitkeep
-
 **/ssl/*
-!**/ssl/.gitkeep
+
+!.gitkeep
