@@ -125,21 +125,21 @@ docker-compose.yml
 mkdir backup
 
 # backup
-docker exec -i $(docker-compose ps -q db) mysqldump --all-databases --single-transaction --quick --lock-tables=false -u dev -p > ./backup/all-databases-$(date +"%Y%m%d-%H%M").sql
-docker exec -i $(docker-compose ps -q db) mysqldump --single-transaction --quick --lock-tables=false -u dev -p > ./backup/all-databases-$(date +"%Y%m%d-%H%M").sql
+docker exec -i $(docker-compose ps -q mysql) mysqldump --all-databases --single-transaction --quick --lock-tables=false -u dev -p > ./backup/all-databases-$(date +"%Y%m%d-%H%M").sql
+docker exec -i $(docker-compose ps -q mysql) mysqldump --single-transaction --quick --lock-tables=false -u dev -p > ./backup/all-databases-$(date +"%Y%m%d-%H%M").sql
 
-docker-compose exec -T db mysqldump --all-databases --single-transaction --quick --lock-tables=false -u dev -p > ./backup/all-databases-$(date +"%Y%m%d-%H%M").sql
-docker-compose exec -T db mysqldump --single-transaction --quick --lock-tables=false -u dev -p app_db > ./backup/app_db-$(date +"%Y%m%d-%H%M").sql
+docker-compose exec -T mysql mysqldump --all-databases --single-transaction --quick --lock-tables=false -u dev -p > ./backup/all-databases-$(date +"%Y%m%d-%H%M").sql
+docker-compose exec -T mysql mysqldump --single-transaction --quick --lock-tables=false -u dev -p app_db > ./backup/app_db-$(date +"%Y%m%d-%H%M").sql
 
-docker-compose exec -T db mysqldump --all-databases --single-transaction --quick --lock-tables=false -u dev -p | gzip > ./backup/all-databases-$(date +"%Y%m%d-%H%M").sql.gz
-docker-compose exec -T db mysqldump --single-transaction --quick --lock-tables=false -u dev -p app_db | gzip >  ./backup/app_db-$(date +"%Y%m%d-%H%M").sql.gz
+docker-compose exec -T mysql mysqldump --all-databases --single-transaction --quick --lock-tables=false -u dev -p | gzip > ./backup/all-databases-$(date +"%Y%m%d-%H%M").sql.gz
+docker-compose exec -T mysql mysqldump --single-transaction --quick --lock-tables=false -u dev -p app_db | gzip >  ./backup/app_db-$(date +"%Y%m%d-%H%M").sql.gz
 
 # restore
-docker exec -i $(docker-compose ps -q db) mysql -uroot -pdev < ./backup/all-databases-###.sql
-docker exec -t $(docker-compose ps -q db) mysql -uroot -p app_db < ./backup/app_db-###.sql
+docker exec -i $(docker-compose ps -q mysql) mysql -uroot -pdev < ./backup/all-databases-###.sql
+docker exec -t $(docker-compose ps -q mysql) mysql -uroot -p app_db < ./backup/app_db-###.sql
 
-gunzip < ./backup/all-###.sql.gz | docker-compose exec -T db mysql -udev -pdev
-gunzip < ./backup/app_db-###.sql.gz | docker-compose exec -T db mysql -udev -pdev app_db
+gunzip < ./backup/all-###.sql.gz | docker-compose exec -T mysql mysql -udev -pdev
+gunzip < ./backup/app_db-###.sql.gz | docker-compose exec -T mysql mysql -udev -pdev app_db
 
 ```
 

@@ -1,26 +1,40 @@
-version: '3'
+version: '3.7'
+
+volumes:
+  processed:
+  typo3temp:
+  var:
+  vendor:
+  typo3:
+  ext:
+#  mysql:
 
 services:
   app:
     image: ${APP_IMAGE}:${APP_TAG}
     working_dir: /app
-    container_name: ${COMPOSE_PROJECT_NAME}_app
+    container_name: ${PROJECT_ID}_app
     volumes:
       - ./app:/app:cached
-      # exclude temp directories
-      - /app/var/
-      - /app/public/fileadmin/_processed_
-      - /app/public/typo3temp/
+      # move directories to volumes
+      - processed:/app/public/fileadmin/_processed_
+      - typo3temp:/app/public/typo3temp
+      - var:/app/var
+      - vendor:/app/vendor
+      - typo3:/app/public/typo3
+      - ext:/app/public/typo3conf/ext
       # mount composer cache
       - ~/.composer/cache:/home/application/.composer/cache
-      # add php settings
-      - ./conf/${PROVISION_CONTEXT}/php.ini:/usr/local/etc/php/conf.d/991-custom.ini
+      # add http2 settings
+      - ./conf/apache/http2.conf:/opt/docker/etc/httpd/vhost.common.d/03-http2.conf
+      # reenable cache mox_expire
+      - ./conf/apache/02-dev.conf:/opt/docker/etc/httpd/vhost.common.d/02-dev.conf
       # add php xdebug profile paths
       - ./data/php-profiles/:/tmp/debug/:delegated
       # add ssh key for repository access
-      #- ./conf/${PROVISION_CONTEXT}/ssh:/home/application/.ssh
+      - ./conf/ssh:/home/application/.ssh
       # replace ssl certs
-      #- ./conf/${PROVISION_CONTEXT}/ssl:/opt/docker/etc/httpd/ssl/
+      - ./conf/ssl:/opt/docker/etc/httpd/ssl/
       # add crontab (run make crontab after rebuild)
       - ./conf/cron/crontab:/var/spool/cron/crontabs/application
     ports:
@@ -30,18 +44,38 @@ services:
       WEB_DOCUMENT_ROOT: ${WEB_DOCUMENT_ROOT}
       WEB_DOCUMENT_INDEX: ${WEB_DOCUMENT_INDEX}
       WEB_PHP_TIMEOUT: ${WEB_PHP_TIMEOUT}
+
+      PHP_DISMOD: ioncube,redis
+      PHP_DATE_TIMEZONE: ${PHP_DATE_TIMEZONE}
+      PHP_DISPLAY_ERRORS: ${PHP_DISPLAY_ERRORS}
+
       PHP_DEBUGGER: ${PHP_DEBUGGER}
+      XDEBUG_REMOTE_HOST: ${XDEBUG_REMOTE_HOST}
+      XDEBUG_REMOTE_CONNECT_BACK: ${XDEBUG_REMOTE_CONNECT_BACK}
+      XDEBUG_IDEKEY: ${XDEBUG_IDEKEY}
+
       BLACKFIRE_SERVER_ID: ${BLACKFIRE_SERVER_ID}
       BLACKFIRE_SERVER_TOKEN: ${BLACKFIRE_SERVER_TOKEN}
+
       TYPO3_CONTEXT: ${PROVISION_CONTEXT}
     depends_on:
       - mysql
 
+  node:
+    image: ${NODE_IMAGE}:${NODE_TAG}
+    container_name: ${PROJECT_ID}_node
+    user: node
+    working_dir: /app
+    volumes:
+      - ${NODE_SRC}:/app/src
+      - ${NODE_DIST}:/app/dist
+
   mysql:
     image: ${MYSQL_IMAGE}:${MYSQL_TAG}
-    container_name: ${COMPOSE_PROJECT_NAME}_mysql
+    container_name: ${PROJECT_ID}_mysql
     volumes:
       - ./data/mysql/:/var/lib/mysql:delegated
+    #      - mysql/:/var/lib/mysql
     ports:
       - ${MYSQL_PORT}:3306
     environment:
@@ -53,7 +87,7 @@ services:
 
   phpmyadmin:
     image: ${PHPMYADMIN_IMAGE}:${PHPMYADMIN_TAG}
-    container_name: ${COMPOSE_PROJECT_NAME}_phpmyadmin
+    container_name: ${PROJECT_ID}_phpmyadmin
     ports:
       - ${PHPMYADMIN_PORT}:80
     environment:
@@ -63,7 +97,7 @@ services:
 
   mailhog:
     image: ${MAILHOG_IMAGE}:${MAILHOG_TAG}
-    container_name: ${COMPOSE_PROJECT_NAME}_mailhog
+    container_name: ${PROJECT_ID}_mailhog
     ports:
       - ${MAILHOG_PORT}:8025
     depends_on:

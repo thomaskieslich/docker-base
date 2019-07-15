@@ -1,16 +1,15 @@
 .DS_Store
 .idea
 
-/app/*
-!/app/composer.json
-!/app/public/
-/app/public/*
-!/app/public/.gitkeep
+app/
+
+/backup/*
+!/backup/app_db.sql.gz
+!/backup/fileadmin.tar.gz
 
 /data/*
 
 **/ssh/*
-!**/ssh/.gitkeep
+**/ssl/*
 
-ssl/*
-!**/ssl/.gitkeep
+!.gitkeep
