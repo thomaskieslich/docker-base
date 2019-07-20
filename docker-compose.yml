@@ -7,6 +7,7 @@ volumes:
   vendor:
   typo3:
   ext:
+  node_modules:
 #  mysql:
 
 services:
@@ -68,6 +69,7 @@ services:
     working_dir: /app
     volumes:
       - ${NODE_SRC}:/app/src
+      - node_modules:/app/src/node_modules
       - ${NODE_DIST}:/app/dist
 
   mysql:
