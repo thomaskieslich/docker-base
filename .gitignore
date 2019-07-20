@@ -1,13 +1,14 @@
 .DS_Store
 .idea
 
-app/
+/app
+!/app/composer.json
 
-/backup/*
+/backup
 !/backup/app_db.sql.gz
 !/backup/fileadmin.tar.gz
 
-/data/*
+/data
 
 **/ssh/*
 **/ssl/*
