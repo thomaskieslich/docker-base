@@ -8,7 +8,7 @@ volumes:
   typo3:
   ext:
 #  mysql:
-  node_modules:
+#  node_modules:
 
 services:
   app:
