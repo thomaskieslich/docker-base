@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 domains=(
-    https://t3-9x.l.test
+    http://t3-9xdev.l.test
 )
 
 function get {
