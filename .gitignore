@@ -2,7 +2,6 @@
 .idea
 
 /app
-!/app/composer.json
 
 /backup
 !/backup/app_db.sql.gz
