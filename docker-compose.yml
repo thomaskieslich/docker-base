@@ -7,7 +7,7 @@ volumes:
   vendor:
   typo3:
   ext:
-  mysql:
+#  mysql:
 #  node_modules:
 
 services:
@@ -76,8 +76,8 @@ services:
     image: ${MYSQL_IMAGE}:${MYSQL_TAG}
     container_name: ${PROJECT_ID}_mysql
     volumes:
-#      - ./data/mysql/:/var/lib/mysql:delegated
-      - mysql/:/var/lib/mysql
+      - ./data/mysql/:/var/lib/mysql:delegated
+#      - mysql/:/var/lib/mysql
     ports:
       - ${MYSQL_PORT}:3306
     environment:
